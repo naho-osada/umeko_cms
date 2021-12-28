@@ -1,0 +1,433 @@
+@charset "UTF-8";
+$ume: #ff7f7f;
+$unohana: #f7fcfe;
+$black: #2b2b2b;
+$white: #FFFFFE;
+$red: #e2041b;
+$hanarokusho: #00a381;
+$shiraumenezu: #e5e4e6;
+$blue: #0095d9;
+$gray: #949495;
+$s-size: 576px;
+@mixin sp {
+    @media (max-width :($s-size)) {
+        @content;
+    }
+}
+/**
+ * 梅子管理用CSS
+ */
+body {
+    background-color: $shiraumenezu;
+    color: $black;
+    font-family:  "UD デジタル 教科書体 N-R","UD Digi Kyokasho N-R","游教科書体","YuKyokasho","ＭＳ Ｐゴシック","MS PGothic",sans-serif,serif;
+    margin: 0;
+}
+button, input, select, textarea {
+    font-family : inherit;
+    font-size   : 100%;
+}
+h1,h2,h3 {
+    color: $black;
+    margin: 1% 0 1% 0;
+}
+h1 {
+    font-size: 1.7em;
+}
+h2 {
+    font-size: 1.5em;
+}
+h3 {
+    font-size: 1.3em;
+}
+button {
+    cursor: pointer;
+}
+.text-right {
+    text-align: right;
+}
+.main {
+    margin: 1% 10%;
+    @include sp {
+        margin: 1%;
+    }
+}
+.header {
+    background-color: $unohana;
+    display: flex;
+    width: 100%;
+    border-bottom: solid 2px $ume;
+    @include sp {
+        flex-direction: column;
+    }
+}
+.header div {
+    @include sp {
+        text-align: center;
+    }
+}
+.header-right {
+    display: flex;
+    flex-direction: column;
+    padding-top: 2%;
+    margin: 0 auto;
+    @include sp {
+        display: block;
+        width: 100%;
+    }
+}
+.cms-name {
+    font-size: 2em;
+    font-weight: bold;
+    margin: 0;
+    padding: 1% 5%;
+    color: $ume;
+    width: 40%;
+    height: 50%;
+    @include sp {
+        width: 100%;
+        padding: 0.5% 0;
+        margin-top: 3%;
+    }
+}
+.header-navi {
+    background-color: $ume;
+    border-bottom: solid 2px $ume;
+    padding: 2% 0;
+    margin-top: 0;
+    // font-weight: bold;
+    display: flex;
+    justify-content: space-around;
+    flex-direction: row;
+    width: 100%;
+    @include sp {
+        flex-wrap: wrap;
+        // flex-direction: column;
+    }
+}
+.header-navi a {
+    text-decoration: none;
+    color: $unohana;
+}
+.header-navi a:hover {
+    color: $blue;
+}
+.header-navi li {
+    list-style: none;
+    @include sp {
+        margin: 1%;
+    }
+}
+.main-contents {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    width: 100%;
+    margin: 0;
+    @include sp {
+        flex-direction: column-reverse;
+    }
+}
+.link_style_none {
+    text-decoration: none;
+}
+.menu {
+    width: 30%;
+    max-width: 360px;
+    height: 100%;
+    margin-right: 1%;
+    background-color: $unohana;
+    border-radius: 5px;
+    @include sp {
+        width: 100%;
+        max-width: 100%;
+        margin: 5% 0;
+    }
+}
+.menu ul {
+    display: flex;
+    flex-direction: column;
+    list-style: none;
+    padding: 1% 5%;
+    margin: 0;
+}
+.menu li {
+    margin: 3% 0;
+    padding: 5% 1%;
+    text-align: left;
+    align-items: center;
+    @include sp {
+        margin: 1% 0;
+        padding: 1% 0;
+    }
+}
+.menu a {
+    display: block;
+}
+.menu h3 {
+    font-size: 1.2em;
+    font-weight: bold;
+    border-bottom: 3px solid $ume;
+    margin: 5% 5% 0;
+}
+.sidebar-article-list {
+    display:flex;
+    flex-wrap: nowrap;
+    align-items: left;
+    list-style: none;
+    padding: 3% 2%;
+    margin: 2% 2%;
+    @include sp {
+        flex-direction: column;
+        align-items: center;
+    }
+}
+.sidebar-list-icatch {
+    margin-right: 2%;
+}
+.sidebar-list-icatch img {
+    max-width: 100px;
+    @include sp {
+        max-width: 300px;
+    }
+}
+.sidebar_category li {
+    background-color: transparent;
+    border: none;
+    color: $black;
+    text-align: left;
+    padding: 1%;
+    @include sp {
+        padding: 0 1%;
+    }
+}
+.sidebar_category li a {
+    color: $black;
+    text-decoration: underline;
+}
+.sidebar_profile {
+    text-align: center;
+}
+.sidebar_profile img {
+    max-width: 200px;
+}
+.sidebar_profile_text {
+    margin: 5%;
+}
+.sidebar-archive-list li {
+    padding: 0;
+}
+.sidebar-archive-list a {
+    color: $black;
+}
+.top-contents {
+    width: 100%;
+}
+.contents {
+    width: 80%;
+    max-width: 800px;
+    border-radius: 5px;
+    background-color: $unohana;
+    @include sp {
+        width: 100%;
+    }
+}
+.contents-area {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+.article-contents img {
+    max-width: 100%;
+}
+.article-list {
+    display:flex;
+    align-items: center;
+    list-style: none;
+    padding: 3% 2%;
+    margin: 2% 2%;
+    border: 1.5px solid $ume;
+    border-radius: 5px;
+    @include sp {
+        flex-direction: column;
+    }
+}
+.ad {
+    max-width: 100%;
+    text-align: center;
+    margin: 1%;
+    @include sp {
+        margin: 1.5% 0;
+        text-align: left;
+    }
+}
+.list-icatch {
+    margin-right: 2%;
+}
+.list-icatch img {
+    max-width: 200px;
+}
+.article-area {
+    padding: 1.5%;
+}
+.article_title {
+    font-size: 2em;
+    @include sp {
+        font-size: 1.5em;
+    }
+}
+.article_title>a {
+    color: $black;
+}
+.article_post {
+    font-size: 0.9em;
+    text-align: right;
+}
+.article_icatch {
+    text-align: center;
+    margin: 5%;
+}
+.article_icatch img {
+    max-width: 100%;
+}
+.article_category {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    padding: 0;
+}
+.article_category>li {
+    list-style: none;
+    margin: 0.5%;
+    padding: 0.5% 1%;
+    font-size: 0.7em;
+    border: 1px solid $hanarokusho;
+    border-radius: 5%;
+    background-color: $hanarokusho;
+}
+.article_category>li>a {
+    color: $white;
+}
+.article_contents img {
+    width: 100%;
+}
+.author_data {
+    text-align: right;
+    font-size: 0.9em;
+}
+.article_pager {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: space-between;
+    @include sp {
+        flex-wrap: wrap;
+    }
+}
+.article_pager>div {
+    margin: 1%;
+    width: 50%;
+    @include sp {
+        width: 100%;
+    }
+}
+.article_pager_box {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: space-around;
+}
+.article_pager_box>div {
+    width: 50%;
+    margin:0.5%;
+    text-align: center;
+}
+.pager_icatch,
+.related_icatch {
+    max-width: 100%;
+}
+.article_related {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: start;
+    align-items: flex-start;
+    padding: 0;
+}
+.article_related>li {
+    list-style: none;
+    width: 30.3%;
+    padding: 1.5%;
+    @include sp {
+        width: 100%;
+        text-align: center;
+        margin-top: 5%;
+    }
+}
+/**
+ * Pager
+ */
+ .pagination {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+.pagination>li {
+    list-style: none;
+    margin: 0 0.5%;
+    font-size: 1.1em;
+}
+.pagination>li:not(.pagerbtn) {
+    border: 1.5px $unohana solid;
+}
+.pagination>li>a {
+    background-color: $unohana;
+    display: block;
+    padding: 10px;
+    text-decoration: none;
+}
+.pagination>.active,
+.pagination>.disabled {
+    padding: 10px;
+}
+.pagination>.active {
+    border: 1.5px $ume solid;
+    border-radius: 5px;
+    background-color: $ume;
+    color: $white;
+}
+
+/**
+ * footer
+ */
+.footer-area {
+    background-color: $hanarokusho;
+    padding: 1% 1% 3% 1%;
+    color: $unohana;
+}
+.footer-area a {
+    text-decoration: none;
+    color: $unohana;
+}
+.footer {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin: 0;
+    padding: 0;
+    font-size: 0.9em;
+}
+.footer li {
+    list-style: none;
+    margin: 2%;
+}
+.copyright {
+    text-align: center;
+    font-size: 0.8em;;
+}
+.sns-btn>a img {
+    width: 80%;
+}
