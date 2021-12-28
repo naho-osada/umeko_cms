@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\DB;
+use Carbon\Carbon;
 
 class Category extends Model
 {
@@ -49,10 +50,11 @@ class Category extends Model
      */
     public function getListPublish()
     {
+        $now = Carbon::now();
         $table = DB::table($this->table . ' as cat');
         $data = $table
                     ->leftJoin('related_category as relcat', 'relcat.category_id', '=' , 'cat.id')
-                    ->leftJoin('article as art', 'art.id', '=' , 'relcat.article_id')->where('status', '=', config('umekoset.status_publish'))
+                    ->leftJoin('article as art', 'art.id', '=' , 'relcat.article_id')->where('status', '=', config('umekoset.status_publish'))->where('art.publish_at', '<=', $now)
                     ->select('cat.id', DB::raw('max(category_name) as category_name'), DB::raw('max(disp_name) as disp_name'), DB::raw('max(cat.user_id) as user_id'), DB::raw('count(relcat.article_id) as article_cnt'))
                     ->groupBy('cat.id')
                     ->orderByRaw('sort_no is null asc') // NULLは後ろへ
