@@ -26,7 +26,7 @@
     </head>
     <body>
     <div class="header">
-        <div class="cms-name"><h1><a href="{{ url('/') }}"><img src="{{ asset('/images/umeko-logo.png') }}" alt="梅子"></a></h1></div>
+        <div class="cms-name"><a href="{{ url('/') }}"><img src="{{ asset('/images/umeko-logo.png') }}" alt="梅子"></a></div>
         <div class="header-right">
             <div>オープンソースのブログCMS「梅子」
                 <a href="https://github.com/naho-osada/umeko_cms" target="_blank" rel="noopener"><img src="{{ asset('/images/icons/GitHub-Mark-32px.png') }}" alt="GitHub"></a>
