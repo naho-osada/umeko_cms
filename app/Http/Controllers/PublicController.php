@@ -98,12 +98,7 @@ class PublicController extends Controller
                 $headKey = 4;
             }
             $headKeyCnt[$headKey]++;
-            if(!empty($attr)) {
-                $attrs = explode('class="', $attr);
-                $attrClass = str_replace('"', '', $attrs[1]) . ' lv-' . $headKey;
-            } else {
-                $attrClass = 'lv-' . $headKey;
-            }
+            $attrClass = 'lv-' . $headKey;
 
             $contents = str_replace($headTag, '<h' . $headKey . $attr . ' id="ttl-' . $headKey . '-' . $headKeyCnt[$headKey] . '">' . $str . '</h' . $headKey . '>', $contents);
             $tableOfContents[] = '<li class="' . $attrClass .'"><a href="#ttl-' . $headKey . '-' . $headKeyCnt[$headKey] . '">' . $str . '</a></li>';
@@ -111,7 +106,12 @@ class PublicController extends Controller
         if(!empty($tableOfContents)) {
             // 目次が存在する場合、「初めのh2タグの上」に目次を追加する
             $firstH2Tag = explode('<h2',$contents);
-            $contents = $firstH2Tag[0] . '<div class="table-of-contents"><h2>目次</h2><ul>' . implode('', $tableOfContents) . '</ul></div><h2' . $firstH2Tag[1];
+            $contents = $firstH2Tag[0] . '<div class="table-of-contents"><h2>目次</h2><ul>' . implode('', $tableOfContents) . '</ul></div>';
+            $i = 1;
+            while(isset($firstH2Tag[$i])) {
+                $contents .= '<h2' . $firstH2Tag[$i];
+                $i++;
+            }
         }
         $article->contents = $contents;
 
