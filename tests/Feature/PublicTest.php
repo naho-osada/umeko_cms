@@ -18,12 +18,15 @@ class PublicTest extends TestCase
      */
     public function test_access()
     {
+        $year = date('Y');
+        $month = date('m');
+
         $response = $this->get('/');
         $response
             ->assertStatus(200)
             ->assertViewIs('public.index');
 
-        $response = $this->get('/2021/12/test01');
+        $response = $this->get('/' . $year . '/' . $month . '/test01');
         $response
             ->assertStatus(200)
             ->assertViewIs('public.article');
@@ -48,7 +51,7 @@ class PublicTest extends TestCase
     public function test_topAccess()
     {
         $year = date('Y');
-        $month = date('m');
+        $month = date('n');
 
         $response = $this->get('/');
         $response
@@ -76,9 +79,9 @@ class PublicTest extends TestCase
     public function test_articleAccess()
     {
         $year = date('Y');
-        $month = date('m');
+        $month = date('n');
 
-        $response = $this->get('/' . $year . '/' . $month . '/test01');
+        $response = $this->get('/' . $year . '/' . sprintf('%02d', $month) . '/test01');
         $response
             ->assertStatus(200)
             ->assertSee('オープンソースのブログCMS「梅子」',false)
@@ -95,7 +98,7 @@ class PublicTest extends TestCase
             ->assertSee('<meta name="description" content="" />', false)
             ->assertSee('<meta property="og:title" content="テスト投稿タイトル01 | 梅子-Umeko-" />', false)
             ->assertSee('<meta property="og:type" content="website" />', false)
-            ->assertSee('<meta property="og:url" content="' . url('/' . $year . '/' . $month . '/test01') . '" />', false)
+            ->assertSee('<meta property="og:url" content="' . url('/' . $year . '/' . sprintf('%02d', $month) . '/test01') . '" />', false)
             ->assertSee('<meta property="og:site_name" content="梅子-Umeko-" />', false)
             ->assertSee('<meta property="og:description" content="" />', false)
             ->assertSee('<meta property="article:published_time" content="', false)
@@ -108,7 +111,7 @@ class PublicTest extends TestCase
     public function test_categoryAccess()
     {
         $year = date('Y');
-        $month = date('m');
+        $month = date('n');
 
         $response = $this->get('/category/01');
         $response
@@ -156,7 +159,7 @@ class PublicTest extends TestCase
     public function test_dateAccess()
     {
         $year = date('Y');
-        $month = date('m');
+        $month = date('n');
 
         // 年月
         $response = $this->get('/date/' . $year . '/' . $month);
@@ -169,13 +172,13 @@ class PublicTest extends TestCase
             ->assertSee('<h3>最近更新された記事</h3>', false)
             ->assertSee('<h3>アーカイブ</h3>', false)
             ->assertSee('/date/' . $year . '/' . $month . '">' . $year . '年' . sprintf('%0d', $month) . '月', false)
-            ->assertSee('<meta name="description" content="2021年12月の記事一覧です。" />', false)
-            ->assertSee('<meta property="og:title" content="2021年12月の記事 | 梅子-Umeko-" />', false)
+            ->assertSee('<meta name="description" content="' . $year . '年' . $month . '月の記事一覧です。" />', false)
+            ->assertSee('<meta property="og:title" content="' . $year . '年' . $month . '月の記事 | 梅子-Umeko-" />', false)
             ->assertSee('<meta property="og:type" content="website" />', false)
-            ->assertSee('<meta property="og:url" content="' . url('/date/2021/12') . '" />', false)
+            ->assertSee('<meta property="og:url" content="' . url('/date/' . $year . '/' . $month) . '" />', false)
             ->assertSee('<meta property="og:image" content="' . url('/images/umeko-logo.png') . '" />', false)
             ->assertSee('<meta property="og:site_name" content="梅子-Umeko-" />', false)
-            ->assertSee('<meta property="og:description" content="2021年12月の記事一覧です。" />', false)
+            ->assertSee('<meta property="og:description" content="' . $year . '年' . $month . '月の記事一覧です。" />', false)
             ->assertSee('<meta property="article:published_time" content="', false)
             ->assertSee('<meta property="article:modified_time" content="', false);
 
@@ -202,13 +205,13 @@ class PublicTest extends TestCase
             ->assertSee('<h3>カテゴリー</h3>', false)
             ->assertSee('<h3>最近更新された記事</h3>', false)
             ->assertSee('<h3>アーカイブ</h3>', false)
-            ->assertSee('<meta name="description" content="2021年の記事一覧です。" />', false)
-            ->assertSee('<meta property="og:title" content="2021年の記事 | 梅子-Umeko-" />', false)
+            ->assertSee('<meta name="description" content="' . $year . '年の記事一覧です。" />', false)
+            ->assertSee('<meta property="og:title" content="' . $year . '年の記事 | 梅子-Umeko-" />', false)
             ->assertSee('<meta property="og:type" content="website" />', false)
-            ->assertSee('<meta property="og:url" content="' . url('/date/2021') . '" />', false)
+            ->assertSee('<meta property="og:url" content="' . url('/date/' . $year) . '" />', false)
             ->assertSee('<meta property="og:image" content="' . url('/images/umeko-logo.png') . '" />', false)
             ->assertSee('<meta property="og:site_name" content="梅子-Umeko-" />', false)
-            ->assertSee('<meta property="og:description" content="2021年の記事一覧です。" />', false)
+            ->assertSee('<meta property="og:description" content="' . $year . '年の記事一覧です。" />', false)
             ->assertSee('<meta property="article:published_time" content="', false)
             ->assertSee('<meta property="article:modified_time" content="', false);
 

@@ -1,6 +1,6 @@
 @charset "UTF-8";
 /**
- * 梅子管理用CSS
+ * 梅子公式サイトCSS
  */
 body {
   background-color: #e5e4e6;
@@ -521,4 +521,37 @@ button {
 
 .sns-btn > a img {
   width: 80%;
+}
+
+/**
+ * 目次
+ */
+.table-of-contents {
+  border: 3px dashed rgba(0, 163, 129, 0.7);
+  background-color: rgba(0, 163, 129, 0.1);
+  border-radius: 5px;
+  padding: 2% 5%;
+}
+@media (max-width: 576px) {
+  .table-of-contents {
+    padding: 2%;
+  }
+}
+
+.table-of-contents > ul {
+  list-style: none;
+  -webkit-padding-start: 1%;
+          padding-inline-start: 1%;
+}
+
+.lv-2 {
+  margin-top: 3%;
+}
+
+.lv-3 {
+  text-indent: 1em;
+}
+
+.lv-4 {
+  text-indent: 2em;
 }

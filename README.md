@@ -1,5 +1,11 @@
 ![](/images/umeko-logo.png)
 
+## 更新履歴 -Update
+- 2022/3/3 自動目次機能を追加しました。
+
+**<br>
+- March 3rd,2022 Added automatic table of contents generation function.
+
 ## 梅子-Umeko-
 梅子はウェブページを管理するCMSアプリケーションです。<br>
 Naho Osadaによって開発されました。<br>
