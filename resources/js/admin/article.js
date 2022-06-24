@@ -3,6 +3,14 @@
  * trumbowygでjQueryを使用しているので、こちらもjQueryの書き方で実装する
  */
 $(function(){
+    var contents = $('#trumbowyg-editor').trumbowyg('html')
+    // scriptタグが含まれるとき、デフォルトでソースモードにする（バグを防ぐため）
+    if(contents.match(/<script/)) {
+      $('.trumbowyg-viewHTML-button').trigger('mousedown');
+      $('#trumbowyg-editor').trumbowyg('empty');
+      $('#trumbowyg-editor').trumbowyg('html', contents);
+    }
+
     if($('#icatch-thumbnail').attr('src') != '') {
       $('.thumbnail-area').show();
     }
@@ -51,5 +59,11 @@ $(function(){
       if($('#save-delete').length > 0) {
         $('#save-delete').val(1);
       }
+    });
+
+    $('.submit').on('click', function () {
+      // 日本語入力時のバグ対策
+      console.log("登録")
+      $('.trumbowyg-viewHTML-button').trigger('mousedown');
     });
 });
