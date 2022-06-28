@@ -26,6 +26,7 @@ __webpack_require__(/*! trumbowyg/dist/plugins/upload/trumbowyg.upload.min.js */
 $.trumbowyg.svgPath = '../../images/trumbowyg/icons.svg';
 $('#trumbowyg-editor').trumbowyg({
   lang: 'ja',
+  tagsToKeep: ['script[src]', 'div'],
   btnsDef: {
     align: {
       dropdown: ['justifyLeft', 'justifyCenter', 'justifyRight', 'justifyFull'],

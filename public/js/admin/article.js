@@ -8,6 +8,14 @@ var __webpack_exports__ = {};
  * trumbowygでjQueryを使用しているので、こちらもjQueryの書き方で実装する
  */
 $(function () {
+  var contents = $('#trumbowyg-editor').trumbowyg('html'); // scriptタグが含まれるとき、デフォルトでソースモードにする（バグを防ぐため）
+
+  if (contents.match(/<script/)) {
+    $('.trumbowyg-viewHTML-button').trigger('mousedown');
+    $('#trumbowyg-editor').trumbowyg('empty');
+    $('#trumbowyg-editor').trumbowyg('html', contents);
+  }
+
   if ($('#icatch-thumbnail').attr('src') != '') {
     $('.thumbnail-area').show();
   } // アイキャッチ画像のサムネイル表示
