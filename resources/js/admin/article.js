@@ -60,10 +60,4 @@ $(function(){
         $('#save-delete').val(1);
       }
     });
-
-    $('.submit').on('click', function () {
-      // 日本語入力時のバグ対策
-      console.log("登録")
-      $('.trumbowyg-viewHTML-button').trigger('mousedown');
-    });
 });
