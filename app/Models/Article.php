@@ -329,4 +329,28 @@ class Article extends Model
 
         return $data;
     }
+
+    /**
+     * getRecentUpdArticle
+     * TOPページのOGP modified用
+     * 最新記事の更新日時を取得する
+     * @access public
+     * @return $data
+     */
+    public function getRecentUpdArticle()
+    {
+        $data = [];
+        $table = DB::table($this->table);
+        $data =
+            $table
+                ->select('article.updated_at')
+                ->where('status', config('umekoset.status_publish'))
+                ->orderBy('updated_at', 'desc')
+                ->orderBy('id', 'desc')
+                ->limit(1)
+                ->get()
+                ->toArray();
+
+        return $data[0];
+    }
 }
