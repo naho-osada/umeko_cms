@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Route;
 use App\Models\Article;
 use App\Models\Category;
 use App\Library\CommonPublic;
+use Carbon\Carbon;
 
 class Ogp
 {
@@ -34,12 +35,20 @@ class Ogp
         $ogp['site_name'] = $siteName;
         // アクション名を判定
         $actions = explode("@", Route::currentRouteAction());
+        $db = new Article();
         if($actions[1] == 'index') {
             // TOP
+            // 最新記事の更新日時を取得する
+            $upd = $db->getRecentUpdArticle();
+            $update = '';
+            if(isset($upd->updated_at)) {
+                $dateobj = new Carbon($upd->updated_at);
+                $update = $dateobj->format('Y-m-dTH:i:s');
+            }
             $ogp['title'] = $siteName;
             $ogp['description'] = config('umekoset.default_description');
             $ogp['published_time'] = config('umekoset.default_published_time');
-            $ogp['modified_time'] = config('umekoset.default_published_time');
+            $ogp['modified_time'] = ($update == '') ? config('umekoset.default_published_time') : $update;
             $ogp['image'] = asset(config('umekoset.top_image'));
             $ogp['url'] = url('/');
         } else if($actions[1] == 'article') {
@@ -63,7 +72,6 @@ class Ogp
             $search['end_date'] = $endDate;
             $search['path'] = $path;
             // 記事の内容の取得
-            $db = new Article();
             $article = $db->searchArticle($search);
             if(empty($article)) return abort('404');
 

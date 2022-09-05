@@ -626,6 +626,20 @@ class ArticleTest extends TestCase
     }
 
     /**
+     * getRecentUpdArticle
+     * 最新の更新日時を取得する OGPタグ用
+     */
+    public function test_getRecentUpdArticle()
+    {
+        $db = new Article();
+        $date = new Carbon();
+        $now = $date->format('Y-m-d H');
+        $data = $db->getRecentUpdArticle();
+        $this->assertObjectHasAttribute('updated_at', $data);
+        $this->assertMatchesRegularExpression('/' . $now . '/', $data->updated_at);
+    }
+
+    /**
      * setDefaultParams
      * ログインユーザーによるデフォルトの検索条件をセットする
      * @access private
