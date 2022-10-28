@@ -457,3 +457,13 @@ button {
 .lv-4 {
     text-indent: 2em;
 }
+
+/**
+ * Preview
+ */
+.preview-row {
+    font-size: 2em;
+    color: $white;
+    background-color: $red;
+    text-align: center;
+}

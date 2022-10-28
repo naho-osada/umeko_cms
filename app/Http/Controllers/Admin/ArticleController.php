@@ -23,6 +23,7 @@ use App\Rules\HalfStringSymbol;
 use App\Rules\ArticleStatus;
 use App\Rules\ArticleAuth;
 use App\Rules\CategoryValid;
+use App\Library\CommonPublic;
 
 class setDate {
     public function __construct()
@@ -489,6 +490,66 @@ class ArticleController extends Controller
                 return redirect('/admin/article/edit?id=' . $id);
             }
         }
+    }
+
+    /**
+     * preview
+     * プレビュー機能
+     * 現在の投稿画面の状態を表示する。保存はしない
+     * Viewは公開画面のものを使用する
+     * @access public
+     * @param $request
+     */
+    public function preview(Request $request)
+    {
+        // 投稿タイトルはHTMLタグ不許可
+        $request['post_title'] = htmlspecialchars($request['post_title'], ENT_QUOTES, 'UTF-8');
+        // HTML Purifier設定があるときは本文の不要タグ（scriptなど）を除去する
+        if(config('umekoset.html_purifier')) $request['trumbowyg-editor'] = clean($request['trumbowyg-editor']);
+
+        // SEO descriptionはHTMLタグと改行を除去する
+        $request['seo_description'] = strip_tags($request['seo_description']);
+        $request['seo_description'] = str_replace("\r\n", '', $request['seo_description']);
+        $request['seo_description'] = str_replace("\n", '', $request['seo_description']);
+
+        $common = new CommonPublic();
+        $article = (object)[];
+        $article->title = $request['post_title'];
+        $article->contents = $common->setTableOfContents($request['trumbowyg-editor']);
+        $article->url = ''; // プレビューなのでURLなし
+        $article->publish_at = $request->open_year . '-' . $request->open_month . '-' . $request->open_day . ' ' . $request->open_hour . ':' . $request->open_min;
+        $article->updated_at = date('Y-m-d H:i:s');
+        $article->user_name = Auth::user()->user_name;
+        $article->icatch_thumbnail = '';
+        // 一時ファイルのときと、既にアップロードされている場合で分ける
+        if($request->file('icatch')) {
+            // 一時ファイル
+            $article->icatch_thumbnail = 'data:' . mime_content_type($request->file('icatch')->getPathName()) . ';base64,' . base64_encode(file_get_contents($request->file('icatch')->getPathName()));
+        } else if($request->save_icatch) {
+            // アップロード済み
+            $saveFile = new SaveFile();
+            $icatchData = $saveFile->getFile($request->save_icatch);
+            if($icatchData) {
+                $article->icatch_thumbnail = asset('storage/uploads/image/' . $icatchData[0]->year . '/' . $icatchData[0]->month . '/large/' . $icatchData[0]->filename);
+            }
+        }
+
+        // カテゴリ設定
+        $relCategories = [];
+        if(!empty($request->category)) {
+            $CatDb = new Category();
+            $catData = $CatDb->getCategories($request->category);
+            $relCategories = [];
+            foreach($catData as $reld) {
+                $relCategories[$reld->id]['url'] = asset('/category/' . $reld->category_name);
+                $relCategories[$reld->id]['name'] = $reld->disp_name;
+            }
+        }
+
+        // Pagerと関連記事は生成しないのでダミーを入れる あくまで「どんな感じで見えるか」を試すだけ
+        $pager = 'preview';
+        $relArticles = [];
+        return view('public.article', compact('article', 'relCategories', 'pager', 'relArticles'));
     }
 
     /**

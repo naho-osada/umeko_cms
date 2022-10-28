@@ -1,3 +1,7 @@
+@if($pager == 'preview')
+<div class="preview-row">Preview</div>
+@endif
+
 @extends('layouts.public')
 
 @section('content')
@@ -20,13 +24,15 @@
         <div class="article-contents">{!! $article->contents !!}</div>
         <div class="author_data">by {{ $article->user_name }}</div>
     </div>
+    @if($pager != 'preview')
     <ul class="footer">
         <li class="tweet-btn sns-btn"><a href="http://twitter.com/share?text=&url={{ $article->url }}" rel="nofollow" onclick="return sns_window(this, 400, 600);" title="Twitterでシェア"><img src="{{ asset('/images/icons/twitter.png') }}"/></a></li>
         <li class="facebook-btn sns-btn"><a href="http://www.facebook.com/share.php?u={{ $article->url }}" onclick="return sns_window(this, 800, 600);" title="Facebookでシェア"><img src="{{ asset('/images/icons/facebook.png') }}" /></a></li>
         <li class="line-btn sns-btn"><a href="//line.me/R/msg/text/?%0A{{ $article->url }}" target="_blank" title="LINEに送る"><img src="{{ asset('/images/icons/line.png') }}" /></a></li>
         <li class="hatena-btn sns-btn"><a href="https://b.hatena.ne.jp/entry/{{ $article->url }}" class="hatena-bookmark-button" data-hatena-bookmark-layout="touch" data-hatena-bookmark-width="40" data-hatena-bookmark-height="40" title="このエントリーをはてなブックマークに追加"><img src="https://b.st-hatena.com/images/v4/public/entry-button/button-only@2x.png" alt="このエントリーをはてなブックマークに追加" width="20" height="20" style="border: none;" /></a><script type="text/javascript" src="https://b.st-hatena.com/js/bookmark_button.js" charset="utf-8" async="async"></script></li>
     </ul>
-    @if($pager)
+    @endif
+    @if($pager && $pager != 'preview')
     <nav class="article_pager">
         @if($pager['before'])
         <div>
