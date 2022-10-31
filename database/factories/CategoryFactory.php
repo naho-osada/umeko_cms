@@ -21,7 +21,7 @@ class CategoryFactory extends Factory
      */
     public function definition()
     {
-        $name = $this->faker->realText(10);
+        $name = $this->faker->word(10);
         $user_id = mt_rand(1, 5);
         return [
             'category_name' => $name,

@@ -7,6 +7,7 @@ namespace Tests\Feature;
 use App\Models\Users;
 use App\Models\Article;
 use App\Models\SaveFile;
+use App\Models\RelatedCategory;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 use Illuminate\Http\UploadedFile;
@@ -60,6 +61,11 @@ class ArticleTest extends TestCase
             ->assertRedirect('/login');
 
         $response = $this->post('/admin/article/upload-image');
+        $response
+            ->assertStatus(302)
+            ->assertRedirect('/login');
+
+        $response = $this->post('/admin/article/preview');
         $response
             ->assertStatus(302)
             ->assertRedirect('/login');
@@ -120,6 +126,10 @@ class ArticleTest extends TestCase
         // 実行ページは通常CSRFが動作するのでCSRFエラーとなるのが正常
         $response = $this->post('/admin/article/upload-image');
         $response->assertStatus(419);
+
+        // プレビュー画面 CSRFが動作する
+        $response = $this->post('/admin/article/preview');
+        $response->assertStatus(419);
     }
 
     /**
@@ -176,6 +186,10 @@ class ArticleTest extends TestCase
 
         // 実行ページは通常CSRFが動作するのでCSRFエラーとなるのが正常
         $response = $this->post('/admin/article/upload-image');
+        $response->assertStatus(419);
+
+        // プレビュー画面 CSRFが動作する
+        $response = $this->post('/admin/article/preview');
         $response->assertStatus(419);
     }
 
@@ -1848,6 +1862,201 @@ class ArticleTest extends TestCase
         // 保存したファイルの削除
         Storage::disk('public')->deleteDirectory('uploads');
     }
+
+    /**
+     * プレビュー画面
+     * 空POST OK、エラーはなし
+     */
+    public function test_previewAdmin()
+    {
+        // 通常想定される使い方
+        // 保存したファイルの削除
+        Storage::disk('public')->deleteDirectory('uploads');
+
+        $this->dummyAdminLogin();
+        $uploadedFile = UploadedFile::fake()->image('test.jpg');
+
+        $icatch = 'data:' . mime_content_type($uploadedFile->getPathName()) . ';base64,' . base64_encode(file_get_contents($uploadedFile->getPathName()));
+
+        $title = 'FeatureTestTitle';
+        $contents = '<p>FeatureTestContents</p>';
+        $status = config('umekoset.status_publish');
+        $path = 'feature_test';
+        $article_auth = config('umekoset.article_auth_admin');
+        $seo = 'Fe2tureTestSeo';
+        $category01 = 1;
+        $category02 = 2;
+        $category03 = 3;
+        $year = Carbon::now()->format('Y');
+        $month = Carbon::now()->format('m');
+        $day = Carbon::now()->format('d');
+        $hour = Carbon::now()->format('h');
+        $min = Carbon::now()->format('i');
+
+        $updData = [];
+        $updData['post_title'] = $title;
+        $updData['trumbowyg-editor'] = $contents;
+        $updData['status'] = $status;
+        $updData['path'] = $path;
+        $updData['article_auth'] = $article_auth;
+        $updData['category'][] = $category01;
+        $updData['category'][] = $category02;
+        $updData['category'][] = $category03;
+        $updData['seo_description'] = $seo;
+        $updData['open_year'] = $year;
+        $updData['open_month'] = $month;
+        $updData['open_day'] = $day;
+        $updData['open_hour'] = $hour;
+        $updData['open_min'] = $min;
+        $updData['icatch'] = $uploadedFile;
+        $response = $this->post('/admin/article/preview', $updData);
+
+        $response
+            ->assertSee('<div class="preview-row">Preview</div>', false)
+            ->assertSee('<img src="' . $icatch . '"', false)
+            ->assertSee($title, false)
+            ->assertSee($contents, false)
+            ->assertSee($year . '/' . $month . '/' . $day . ' ' . $hour . ':' . $min, false)
+            ->assertSee('カテゴリ01', false)
+            ->assertSee('カテゴリ02', false)
+            ->assertSee('カテゴリ03', false);
+
+        // 編集画面にアクセスしてプレビュー
+        $search = [];
+        $id = 4;
+        $search['id'] = $id;
+        $db = new Article();
+        $data = $db->getArticle($search);
+        $data = $data[0];
+        // 公開日時の設定
+        $data->open_year = date('Y', strtotime($data->publish_at));
+        $data->open_month = date('m', strtotime($data->publish_at));
+        $data->open_day = date('d', strtotime($data->publish_at));
+        $data->open_hour = date('H', strtotime($data->publish_at));
+        $data->open_min = date('i', strtotime($data->publish_at));
+        $data->open_seconds = date('s', strtotime($data->publish_at));
+        // アイキャッチ画像の設定
+        if($data->icatch) {
+            $icatch = asset('storage/uploads/image/' . $data->icatch_y . '/' . $data->icatch_m . '/large/' . $data->icatch_file);
+        }
+        // カテゴリ情報の取得
+        $updData = [];
+        $relCatDb = new RelatedCategory();
+        $relData = $relCatDb->getCategories($id);
+        if(!empty($relData)) {
+            foreach($relData as $reld) {
+                 $updData['category'][] = $reld->category_id;
+            }
+        }
+        $updData['post_title'] = $data->title;
+        $updData['trumbowyg-editor'] = $data->contents;
+        $updData['status'] = $data->status;
+        $updData['path'] = $data->path;
+        $updData['article_auth'] = $data->article_auth;
+        $updData['seo_description'] = $data->seo_description;
+        $updData['open_year'] = $data->open_year;
+        $updData['open_month'] = $data->open_month;
+        $updData['open_day'] = $data->open_day;
+        $updData['open_hour'] = $data->open_hour;
+        $updData['open_min'] = $data->open_min;
+        $updData['save_icatch'] = $data->icatch;
+        $response = $this->post('/admin/article/preview', $updData);
+        $response
+            ->assertSee('<div class="preview-row">Preview</div>', false)
+            ->assertSee('<img src="' . $icatch . '"', false)
+            ->assertSee($data->title, false)
+            ->assertSee($data->contents, false)
+            ->assertSee($data->open_year . '/' . $data->open_month . '/' . $data->open_day . ' ' . $data->open_hour . ':' . $data->open_min, false);
+        if(!empty($relData)) {
+            foreach($relData as $reld) {
+             $response->assertSee($reld->category_name, false);
+            }
+        }
+
+        // 空状態でプレビューアクセス
+        $title = '';
+        $contents = '';
+        $status = config('umekoset.status_publish');
+        $path = '';
+        $article_auth = config('umekoset.article_auth_admin');
+        $seo = '';
+        $year = Carbon::now()->format('Y');
+        $month = Carbon::now()->format('m');
+        $day = Carbon::now()->format('d');
+        $hour = Carbon::now()->format('h');
+        $min = Carbon::now()->format('i');
+
+        $updData = [];
+        $updData['post_title'] = $title;
+        $updData['trumbowyg-editor'] = $contents;
+        $updData['status'] = $status;
+        $updData['path'] = $path;
+        $updData['article_auth'] = $article_auth;
+        $updData['seo_description'] = $seo;
+        $updData['open_year'] = $year;
+        $updData['open_month'] = $month;
+        $updData['open_day'] = $day;
+        $updData['open_hour'] = $hour;
+        $updData['open_min'] = $min;
+        $updData['icatch'] = $uploadedFile;
+        $response = $this->post('/admin/article/preview', $updData);
+
+        $response
+            ->assertSee('<div class="preview-row">Preview</div>', false)
+            ->assertSee($title, false)
+            ->assertSee($contents, false)
+            ->assertSee($year . '/' . $month . '/' . $day . ' ' . $hour . ':' . $min, false)
+            ->assertDontSee('<ul class="article_category">', false);
+
+        // ユーザーも使用できることの確認
+        $this->dummyUserLogin();
+        $uploadedFile = UploadedFile::fake()->image('test_user.jpg');
+
+        $icatch = 'data:' . mime_content_type($uploadedFile->getPathName()) . ';base64,' . base64_encode(file_get_contents($uploadedFile->getPathName()));
+
+        $title = 'FeatureTestTitle';
+        $contents = '<p>FeatureTestContents</p>';
+        $status = config('umekoset.status_publish');
+        $path = 'feature_test';
+        $article_auth = config('umekoset.article_auth_admin');
+        $seo = 'Fe2tureTestSeo';
+        $category01 = 1;
+        $category02 = 2;
+        $category03 = 3;
+        $year = Carbon::now()->format('Y');
+        $month = Carbon::now()->format('m');
+        $day = Carbon::now()->format('d');
+        $hour = Carbon::now()->format('h');
+        $min = Carbon::now()->format('i');
+
+        $updData = [];
+        $updData['post_title'] = $title;
+        $updData['trumbowyg-editor'] = $contents;
+        $updData['status'] = $status;
+        $updData['path'] = $path;
+        $updData['article_auth'] = $article_auth;
+        $updData['category'][] = $category01;
+        $updData['category'][] = $category02;
+        $updData['category'][] = $category03;
+        $updData['seo_description'] = $seo;
+        $updData['open_year'] = $year;
+        $updData['open_month'] = $month;
+        $updData['open_day'] = $day;
+        $updData['open_hour'] = $hour;
+        $updData['open_min'] = $min;
+        $updData['icatch'] = $uploadedFile;
+        $response = $this->post('/admin/article/preview', $updData);
+
+        $response
+            ->assertSee('<div class="preview-row">Preview</div>', false)
+            ->assertSee('<img src="' . $icatch . '"', false)
+            ->assertSee($title, false)
+            ->assertSee($contents, false)
+            ->assertSee($year . '/' . $month . '/' . $day . ' ' . $hour . ':' . $min, false)
+            ->assertSee('カテゴリ01', false)
+            ->assertSee('カテゴリ02', false)
+            ->assertSee('カテゴリ03', false);
+        }
 
     /**
      * 管理者ダミーユーザーログイン

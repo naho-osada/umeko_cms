@@ -140,6 +140,14 @@ class Ogp
             $ogp['url'] = url($request->getRequestUri());
 
             $request['articles'] = $article;
+        } else if($actions[1] == 'preview') {
+            // プレビュー機能用
+            $ogp['title'] = $request->post_title . config('umekoset.separate') . $siteName;
+            $ogp['description'] = $request->seo_description;
+            $ogp['published_time'] = $request->open_year . '-' . $request->open_month . '-' . $request->open_day . ' ' .$request->open_hour . ':' . $request->open_min;
+            $ogp['modified_time'] = date('Y-m-d H:i:s');
+            $ogp['image'] = '';
+            $ogp['url'] = '';
         }
         $this->viewFactory->share('ogp', $ogp);
 

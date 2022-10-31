@@ -91,6 +91,27 @@ class Category extends Model
     }
 
     /**
+     * getCategories
+     * カテゴリ情報を複数取得する
+     * @access public
+     * @param $ids
+     * @return $data
+     */
+    public function getCategories($ids)
+    {
+        $data = [];
+        if(empty($ids)) return $data;
+        $table = DB::table($this->table);
+        $table
+            ->select('id', 'category_name', 'disp_name')
+            ->whereIn('id', $ids);
+        $data = $table
+            ->get()
+            ->toArray();
+        return $data;
+    }
+
+    /**
      * getCategoryAll
      * カテゴリ情報を全項目取得する
      * 試験用

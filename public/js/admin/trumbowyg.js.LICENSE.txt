@@ -22,14 +22,3 @@
  *
  * Date: 2021-03-02T17:08Z
  */
-
-/**
- * Trumbowyg v2.25.1 - A lightweight WYSIWYG editor
- * Trumbowyg core file
- * ------------------------
- * @link http://alex-d.github.io/Trumbowyg
- * @license MIT
- * @author Alexandre Demode (Alex-D)
- *         Twitter : @AlexandreDemode
- *         Website : alex-d.fr
- */

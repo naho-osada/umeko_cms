@@ -381,4 +381,77 @@ class CategoryTest extends TestCase
             $this->assertGreaterThanOrEqual(1, $data->article_cnt);
         }
     }
+
+    /**
+     * getCategories
+     * カテゴリ情報を複数取得する
+     * id1つ
+     */
+    public function test_getCategories()
+    {
+        $ids = [];
+        $ids[] = 1;
+        $cols = ['id', 'category_name', 'disp_name'];
+        $db = new Category();
+        $categories = $db->getCategories($ids);
+        $this->assertTrue(is_array($categories));
+        // 取得項目の確認
+        foreach($categories as $category) {
+            $checkColData = (array)$category;
+            $this->assertSame($cols, array_keys($checkColData));
+        }
+        // 取得件数確認
+        $this->assertSame(count($ids), count($categories));
+    }
+
+    /**
+     * getCategories
+     * カテゴリ情報を複数取得する
+     * id複数
+     */
+    public function test_getCategoriesMulti()
+    {
+        $ids = [];
+        $cols = ['id', 'category_name', 'disp_name'];
+        $ids = [1, 2, 3];
+        $db = new Category();
+        $categories = $db->getCategories($ids);
+        $this->assertTrue(is_array($categories));
+        // 取得項目の確認
+        foreach($categories as $category) {
+            $checkColData = (array)$category;
+            $this->assertSame($cols, array_keys($checkColData));
+        }
+        // 取得件数確認
+        $this->assertSame(count($ids), count($categories));
+    }
+
+    /**
+     * getCategoriesEmpty
+     * カテゴリ情報を複数取得する
+     * id空
+     */
+    public function test_getCategoriesEmpty()
+    {
+        $ids = [];
+        $db = new Category();
+        $categories = $db->getCategories($ids);
+        $this->assertTrue(is_array($categories));
+        $this->assertEmpty($categories);
+    }
+
+    /**
+     * getCategoriesEmpty02
+     * カテゴリ情報を複数取得する
+     * idが存在しないもの
+     */
+    public function test_getCategoriesEmpty02()
+    {
+        $ids = [];
+        $ids = [9999,10000];
+        $db = new Category();
+        $categories = $db->getCategories($ids);
+        $this->assertTrue(is_array($categories));
+        $this->assertEmpty($categories);
+    }
 }

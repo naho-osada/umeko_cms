@@ -6,7 +6,7 @@
         <h1>記事の投稿</h1>
         @if(Session::has('flashmessage'))<div class="result-msg">{{ session('flashmessage') }}</div>@endif
         @if($errors->all())<div class="result-msg">入力エラーがあります。確認してください。</div>@endif
-        <form method="post" action="{{ url('/admin/article/edit-proc') }}" enctype="multipart/form-data">
+        <form method="post" enctype="multipart/form-data">
         @csrf
         <dl>
             <dt>公開日時@if(isset($data->user_name))（公開者：{{ $data->user_name }}）@endif</dt>
@@ -122,7 +122,10 @@
             </dd>
         </dl>
         <input type="hidden" name="id" value="{{ $id }}">
-        <div class="submit-btn"><button class="btn submit" type="submit">@if(empty($id)) 投稿 @else 更新@endif</button></div>
+        <div class="form-btn">
+            <button class="btn submit submit-btn private-btn" type="submit" formaction="{{ url('/admin/article/preview') }}" formtarget="_blank">プレビュー</button>
+            <button class="btn submit submit-btn" type="submit" formaction="{{ url('/admin/article/edit-proc') }}">@if(empty($id)) 投稿 @else 更新@endif</button>
+        </div>
         </form>
     </div>
 </div>

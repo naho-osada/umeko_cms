@@ -43,6 +43,7 @@ Route::post('/admin/article/upload-image', [App\Http\Controllers\Admin\ArticleCo
 Route::post('/admin/article/edit-proc', [App\Http\Controllers\Admin\ArticleController::class, 'editProc']);
 Route::get('/admin/article/delete-confirm', [App\Http\Controllers\Admin\ArticleController::class, 'deleteConfirm'])->name('delete-confirm');
 Route::post('/admin/article/delete-proc', [App\Http\Controllers\Admin\ArticleController::class, 'deleteProc']);
+Route::post('/admin/article/preview', [App\Http\Controllers\Admin\ArticleController::class, 'preview'])->middleware('ogp')->middleware('sidebar');
 // ▲ 記事管理 ▲
 
 // ▼ カテゴリ管理 ▼
