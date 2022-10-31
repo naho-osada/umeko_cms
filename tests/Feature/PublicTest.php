@@ -84,6 +84,7 @@ class PublicTest extends TestCase
         $response = $this->get('/' . $year . '/' . sprintf('%02d', $month) . '/test01');
         $response
             ->assertStatus(200)
+            ->assertDontSee('<div class="preview-row">Preview</div>', false)
             ->assertSee('オープンソースのブログCMS「梅子」',false)
             ->assertSeeText('テスト投稿タイトル01')
             ->assertSeeText('カテゴリ01')

@@ -10,7 +10,7 @@
         <h1 class="article_title"><a href="{{ $article->url }}" title="{{ $article->title }}" class="link_style_none">{{ $article->title }}</a></h1>
         <div class="article_post">{{ date('Y/n/j H:i', strtotime($article->publish_at)) }}@if($article->publish_at != $article->updated_at && date('Ymd', strtotime($article->publish_at)) < date('Ymd', strtotime($article->updated_at)))（更新日&nbsp;{{ date('Y/n/j H:i', strtotime($article->updated_at)) }}）@endif</div>
         @if(!empty($article->icatch_thumbnail))
-        <div class="article_icatch"><a href="{{ $article->url }}" title="{{ $article->title }}" class="link_style_none"><img src="@if($article->icatch_thumbnail) {{ $article->icatch_thumbnail }} @endif" id="icatch-thumbnail"></a></div>
+        <div class="article_icatch"><a href="{{ $article->url }}" title="{{ $article->title }}" class="link_style_none"><img src="@if($article->icatch_thumbnail){{ $article->icatch_thumbnail }}@endif"id="icatch-thumbnail"></a></div>
         @endif
         @if(!empty($relCategories))
         <div>
