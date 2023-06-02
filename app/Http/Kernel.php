@@ -64,5 +64,6 @@ class Kernel extends HttpKernel
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
         'ogp' => \App\Http\Middleware\Ogp::class,
         'sidebar' => \App\Http\Middleware\Sidebar::class,
+        'sitemap' => \App\Http\Middleware\Sitemap::class,
     ];
 }

@@ -40,7 +40,7 @@ Route::get('/admin/article/private', [App\Http\Controllers\Admin\ArticleControll
 Route::get('/admin/article/publish', [App\Http\Controllers\Admin\ArticleController::class, 'publish']);
 Route::get('/admin/article/edit', [App\Http\Controllers\Admin\ArticleController::class, 'edit'])->name('edit');
 Route::post('/admin/article/upload-image', [App\Http\Controllers\Admin\ArticleController::class, 'uploadImage']);
-Route::post('/admin/article/edit-proc', [App\Http\Controllers\Admin\ArticleController::class, 'editProc']);
+Route::post('/admin/article/edit-proc', [App\Http\Controllers\Admin\ArticleController::class, 'editProc'])->middleware('sitemap');
 Route::get('/admin/article/delete-confirm', [App\Http\Controllers\Admin\ArticleController::class, 'deleteConfirm'])->name('delete-confirm');
 Route::post('/admin/article/delete-proc', [App\Http\Controllers\Admin\ArticleController::class, 'deleteProc']);
 Route::post('/admin/article/preview', [App\Http\Controllers\Admin\ArticleController::class, 'preview'])->middleware('ogp')->middleware('sidebar');
