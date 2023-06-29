@@ -8,6 +8,8 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\File;
 use App\Models\Article;
 use App\Library\CommonPublic;
+use App\Models\Category;
+use App\Models\RelatedCategory;
 
 class Sitemap
 {
@@ -51,9 +53,36 @@ class Sitemap
         // トップページを追加
         Storage::append($sitemapFile, $topPage);
         // カテゴリー一覧ページを追加
-        // 次回ここから
+        $catDb = new Category();
+        $category = $catDb->getListPublish();
+        $relCat = new RelatedCategory;
         $csvAry = [];
+        foreach($category as $cat) {
+            // カテゴリの中の最新記事を日付に使う
+            $catArticle = $relCat->getRelCatNameArticle($cat->category_name);
+            $updated_at = empty($catArticle) ? config('umekoset.default_published_time') : $catArticle[0]->updated_at;
+
+            $url = url('/category/' . $cat->category_name . '/');
+            $csvAry[] = '<url>' . "\n". '<loc>' . $url . '</loc>' . "\n" . '<lastmod>' . $updated_at . '</lastmod>' . "\n" . '</url>';
+            if(count($csvAry) == $limit) {
+                // カテゴリ件数が多く1000行になったらデータを書き込む
+                Storage::append($sitemapFile, implode("\n", $csvAry));
+                $csvAry = [];
+            }
+        }
+        Storage::append($sitemapFile, implode("\n", $csvAry));
+
+        // @foreach ($sidebarCategory as $data)
+        // <li>
+        //     <a href="{{ url('/category/' . $data->category_name . '/') }}">
+        //         {{ $data->disp_name }}（@if($data->article_cnt == null) 0 @else {{ $data->article_cnt }} @endif）
+        //     </a>
+        // </li>
+        // @endforeach
+
+        // 次回ここから
         while($data = $db->getAllData($offset, $limit)) {
+            $csvAry = [];
             $siteData = $common->setUrl($data);
             foreach($siteData as $d) {
                 $csvAry[] = '<url>' . "\n". '<loc>' . $d->url . '</loc>' . "\n" . '<lastmod>' . $d->updated_at . '</lastmod>' . "\n" . '</url>';
