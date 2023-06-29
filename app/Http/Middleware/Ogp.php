@@ -12,6 +12,7 @@ use App\Models\Article;
 use App\Models\Category;
 use App\Library\CommonPublic;
 use Carbon\Carbon;
+use App\Models\RelatedCategory;
 
 class Ogp
 {
@@ -100,11 +101,14 @@ class Ogp
             $category = $catDb->getCategoryName($name);
             if(empty($category[0])) return abort('404');
             $category = $category[0];
+            $relCat = new RelatedCategory;
+            $catArticle = $relCat->getRelCatNameArticle($name);
+            $updateCatArtDate = empty($catArticle) ? config('umekoset.default_published_time') : $catArticle[0]->updated_at;
 
             $ogp['title'] = $category->category_name . ' の記事' . config('umekoset.separate') . $siteName;
             $ogp['description'] = 'カテゴリー名「' . $category->category_name . '」の一覧です。';
             $ogp['published_time'] = config('umekoset.default_published_time');
-            $ogp['modified_time'] = config('umekoset.default_published_time');
+            $ogp['modified_time'] = $updateCatArtDate;
             $ogp['image'] = asset(config('umekoset.top_image'));
             $ogp['url'] = url($request->getRequestUri());
 
