@@ -72,8 +72,5 @@ class Sitemap
             Storage::append($sitemapFile, implode("\n", $csvAry));
         }
         Storage::append($sitemapFile, '</urlset>' . "\n");
-
-
-        // 公開中データを全取得
     }
 }
