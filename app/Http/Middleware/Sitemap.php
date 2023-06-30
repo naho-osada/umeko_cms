@@ -23,16 +23,6 @@ class Sitemap
     public function handle(Request $request, Closure $next)
     {
         return $next($request);
-
-        // サイトマップを生成する
-        // リクエストの中に何が入ってるか？確認
-        // もし今公開した記事の「更新」等が入っていたら、「更新」のときはサイトマップ更新、そうでない場合は何もしないようにしたい
-        $a = '';
-        // Articleの公開中データを5000件取得する（5000件ループにしておく？）
-        // 初回、既定のurlsetを書く<urlset>
-        // <url> <loc>にURL <lastmod>に更新日 をかく </url>
-        // </urlset>
-        // publicにsitemap.xmlとして保存
     }
 
     public function terminate($request, $response)
@@ -71,16 +61,7 @@ class Sitemap
             }
         }
         Storage::append($sitemapFile, implode("\n", $csvAry));
-
-        // @foreach ($sidebarCategory as $data)
-        // <li>
-        //     <a href="{{ url('/category/' . $data->category_name . '/') }}">
-        //         {{ $data->disp_name }}（@if($data->article_cnt == null) 0 @else {{ $data->article_cnt }} @endif）
-        //     </a>
-        // </li>
-        // @endforeach
-
-        // 次回ここから
+        // 各記事の情報を追加
         while($data = $db->getAllData($offset, $limit)) {
             $csvAry = [];
             $siteData = $common->setUrl($data);
