@@ -1,10 +1,20 @@
 ![](/images/umeko-logo.png)
 
 ## 更新履歴 -Update
-- 2022/3/3 自動目次機能を追加しました。
+- 2023/6/30  サイトマップ自動生成機能を追加
+- 2022/10/31 記事のプレビュー機能を追加
+- 2022/9/5   TOPページのOGPタグmodified_dateを最後に更新された記事の更新日になるように修正
+- 2022/6/28  本文中にscriptタグがある記事を再編集するときに一定の操作を行うと表示が崩れる問題を修正
+- 2022/4/8   予約投稿記事の更新日が過去のものになるケースを修正
+- 2022/3/3   自動目次機能を追加しました。
 
 **<br>
-- March 3rd,2022 Added automatic table of contents generation function.
+- June 30th,2022     Added automatic sitemap generation function.
+- Octber 31st,2022   Added article preview function.
+- September 5th,2022 Corrected the OGP tag modified_date on the TOP page to be the updated date of the last updated article.
+- June 28th,2022     Fixed a problem that the display collapsed when performing certain operations when re-editing an article with script tags in the text
+- April 8th,2022     Fixed a case where the update date of the reserved post article was in the past.
+- March 3rd,2022     Added automatic table of contents generation function.
 
 ## 梅子-Umeko-
 梅子はウェブページを管理するCMSアプリケーションです。<br>
@@ -120,6 +130,7 @@ You can change the publishing status from this screen.<br>
 画像のアップロードも可能です。<br>
 公開ステータスは公開中、非公開、下書きの3種類があります。公開中ステータスのもののみ、ログインなしでアクセスできます。<br>
 記事のURLは「/公開年/公開月/ページ名称」でアクセスします。<br>
+また、記事の登録、編集、削除をするとサイトマップが自動で生成されます。<br>
 
 **<br>
 Umeko's greatest function, you can register, edit, and delete articles to be published.<br>
@@ -127,6 +138,7 @@ The editor uses Trumbowyg (Thanks!).<br>
 Images can also be uploaded.<br>
 There are three types of public status: public, private, and draft. Only those with public status can be accessed without logging in.<br>
 The URL of the article is accessed by "/ year of publication / month of publication / page name".<br>
+Also, when you register, edit, or delete an article, a sitemap is automatically generated.<br>
 
 ### カテゴリー -Category
 記事に付属するカテゴリーを登録することができます。ただ、こちらは使用しなくても問題はありません。<br>
@@ -212,6 +224,10 @@ The Umeko's creator is not very good at English (* I can read it).<br>
 - <a href="https://laravel.com" target="_blank">Laravel 8</a>
 - <a href="https://github.com/mewebstudio/captcha" target="_blank">Captcha for Laravel 5/6/7(mewebstudio)</a>
 - <a href="https://alex-d.github.io/Trumbowyg/">Trumbowyg</a>
+
+## 梅子CMS利用サイト -Umeko CMS usage site
+- <a href="https://umeko.engineer-lady.com/" target="_blank">梅子CMS公式サイト -Umeko CMS Official Website</a>
+- <a href="https://telework.engineer-lady.com/" target="_blank">快適！テレワーク生活 -Comfortable! Telework life</a>
 
 Thank you!
 
