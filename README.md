@@ -9,7 +9,7 @@
 - 2022/3/3   自動目次機能を追加しました。
 
 **<br>
-- June 30th,2022     Added automatic sitemap generation function.
+- June 30th,2023     Added automatic sitemap generation function.
 - Octber 31st,2022   Added article preview function.
 - September 5th,2022 Corrected the OGP tag modified_date on the TOP page to be the updated date of the last updated article.
 - June 28th,2022     Fixed a problem that the display collapsed when performing certain operations when re-editing an article with script tags in the text
