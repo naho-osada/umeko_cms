@@ -36,13 +36,13 @@ Route::post('/admin/user/delete-proc', [App\Http\Controllers\Admin\UserControlle
 
 // ▼ 記事管理 ▼
 Route::get('/admin/article', [App\Http\Controllers\Admin\ArticleController::class, 'index'])->name('index');
-Route::get('/admin/article/private', [App\Http\Controllers\Admin\ArticleController::class, 'private']);
-Route::get('/admin/article/publish', [App\Http\Controllers\Admin\ArticleController::class, 'publish']);
+Route::get('/admin/article/private', [App\Http\Controllers\Admin\ArticleController::class, 'private'])->middleware('sitemap');
+Route::get('/admin/article/publish', [App\Http\Controllers\Admin\ArticleController::class, 'publish'])->middleware('sitemap');
 Route::get('/admin/article/edit', [App\Http\Controllers\Admin\ArticleController::class, 'edit'])->name('edit');
 Route::post('/admin/article/upload-image', [App\Http\Controllers\Admin\ArticleController::class, 'uploadImage']);
 Route::post('/admin/article/edit-proc', [App\Http\Controllers\Admin\ArticleController::class, 'editProc'])->middleware('sitemap');
 Route::get('/admin/article/delete-confirm', [App\Http\Controllers\Admin\ArticleController::class, 'deleteConfirm'])->name('delete-confirm');
-Route::post('/admin/article/delete-proc', [App\Http\Controllers\Admin\ArticleController::class, 'deleteProc']);
+Route::post('/admin/article/delete-proc', [App\Http\Controllers\Admin\ArticleController::class, 'deleteProc'])->middleware('sitemap');
 Route::post('/admin/article/preview', [App\Http\Controllers\Admin\ArticleController::class, 'preview'])->middleware('ogp')->middleware('sidebar');
 // ▲ 記事管理 ▲
 
