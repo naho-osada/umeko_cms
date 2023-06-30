@@ -371,6 +371,9 @@ class ArticleTest extends TestCase
      */
     public function test_privateArticle()
     {
+        // サイトマップの存在と日付を取得
+        $beforeTime = $this->checkSitemapBefore();
+
         $this->dummyAdminLogin();
         $response = $this->get('/admin/article/private?id=1');
         $response
@@ -382,7 +385,11 @@ class ArticleTest extends TestCase
             ->assertStatus(200)
             ->assertViewIs('admin.article.edit')
             ->assertSee('<option value="2"  selected >非公開</option>', false);
+
+            // サイトマップがあることの確認
+        $this->checkSitemapAfter($beforeTime);
     }
+
     /**
      * 記事一覧からの非公開（異常系）
      */
@@ -413,6 +420,8 @@ class ArticleTest extends TestCase
      */
     public function test_publishArticle()
     {
+        // サイトマップの存在と日付を取得
+        $beforeTime = $this->checkSitemapBefore();
         $this->dummyAdminLogin();
         $response = $this->get('/admin/article/publish?id=2');
         $response
@@ -424,6 +433,9 @@ class ArticleTest extends TestCase
             ->assertStatus(200)
             ->assertViewIs('admin.article.edit')
             ->assertSee('<option value="1"  selected >公開中</option>', false);
+
+        // サイトマップがあることの確認
+        $this->checkSitemapAfter($beforeTime);
     }
     /**
      * 記事一覧からの公開（異常系）
@@ -497,11 +509,15 @@ class ArticleTest extends TestCase
      */
     public function test_deleteProcArticle()
     {
+        $beforeTime = $this->checkSitemapBefore();
         $this->dummyAdminLogin();
         $response = $this->post('/admin/article/delete-proc?id=1');
         $response
             ->assertStatus(302)
             ->assertSessionHas('flashmessage', '記事を削除しました。');
+
+        // サイトマップがあることの確認
+        $this->checkSitemapAfter($beforeTime);
     }
     /**
      * 記事一覧からの削除（異常系）
@@ -536,6 +552,7 @@ class ArticleTest extends TestCase
         // 保存したファイルの削除
         Storage::disk('public')->deleteDirectory('uploads');
 
+        $beforeTime = $this->checkSitemapBefore();
         // 管理者が投稿する
         $this->dummyAdminLogin();
         $uploadedFile = UploadedFile::fake()->image('test.jpg');
@@ -646,6 +663,8 @@ class ArticleTest extends TestCase
             ->assertSeeText(config('umekoset.status')[$status])
             ->assertSeeText($seo);
 
+        // サイトマップ生成の確認
+        $this->checkSitemapAfter($beforeTime);
         // 保存したファイルの削除
         Storage::disk('public')->deleteDirectory('uploads');
     }
@@ -1407,6 +1426,9 @@ class ArticleTest extends TestCase
         // 保存したファイルの削除
         Storage::disk('public')->deleteDirectory('uploads');
 
+        // サイトマップがあることの確認
+        $beforeTime = $this->checkSitemapBefore();
+
         $this->dummyAdminLogin();
         $uploadedFile = UploadedFile::fake()->image('test.jpg');
 
@@ -1565,6 +1587,9 @@ class ArticleTest extends TestCase
             ->assertSeeText(config('umekoset.status')[$status])
             ->assertSeeText(config('umekoset.article_auth')[$article_auth])
             ->assertSeeText($seo);
+
+        // サイトマップがあることの確認
+        $this->checkSitemapAfter($beforeTime);
 
         // 保存したファイルの削除
         Storage::disk('public')->deleteDirectory('uploads');
@@ -1916,7 +1941,7 @@ class ArticleTest extends TestCase
             ->assertSee('<img src="' . $icatch . '"', false)
             ->assertSee($title, false)
             ->assertSee($contents, false)
-            ->assertSee($year . '/' . $month . '/' . $day . ' ' . $hour . ':' . $min, false)
+            ->assertSee($year . '/' . sprintf('%d', $month) . '/' . $day . ' ' . $hour . ':' . $min, false)
             ->assertSee('カテゴリ01', false)
             ->assertSee('カテゴリ02', false)
             ->assertSee('カテゴリ03', false);
@@ -1966,7 +1991,7 @@ class ArticleTest extends TestCase
             ->assertSee('<img src="' . $icatch . '"', false)
             ->assertSee($data->title, false)
             ->assertSee($data->contents, false)
-            ->assertSee($data->open_year . '/' . $data->open_month . '/' . $data->open_day . ' ' . $data->open_hour . ':' . $data->open_min, false);
+            ->assertSee($data->open_year . '/' . sprintf('%d', $data->open_month) . '/' . $data->open_day . ' ' . $data->open_hour . ':' . $data->open_min, false);
         if(!empty($relData)) {
             foreach($relData as $reld) {
              $response->assertSee($reld->category_name, false);
@@ -2005,7 +2030,7 @@ class ArticleTest extends TestCase
             ->assertSee('<div class="preview-row">Preview</div>', false)
             ->assertSee($title, false)
             ->assertSee($contents, false)
-            ->assertSee($year . '/' . $month . '/' . $day . ' ' . $hour . ':' . $min, false)
+            ->assertSee($year . '/' . sprintf('%d', $month) . '/' . $day . ' ' . $hour . ':' . $min, false)
             ->assertDontSee('<ul class="article_category">', false);
 
         // ユーザーも使用できることの確認
@@ -2052,7 +2077,7 @@ class ArticleTest extends TestCase
             ->assertSee('<img src="' . $icatch . '"', false)
             ->assertSee($title, false)
             ->assertSee($contents, false)
-            ->assertSee($year . '/' . $month . '/' . $day . ' ' . $hour . ':' . $min, false)
+            ->assertSee($year . '/' . sprintf('%d', $month) . '/' . $day . ' ' . $hour . ':' . $min, false)
             ->assertSee('カテゴリ01', false)
             ->assertSee('カテゴリ02', false)
             ->assertSee('カテゴリ03', false);
@@ -2080,5 +2105,44 @@ class ArticleTest extends TestCase
         return $this->actingAs($user)
             ->withSession(['email' => $user->email])
             ->get('/admin/top'); // リダイレクト
+    }
+
+    /**
+     * サイトマップ確認の前段階
+     */
+    private function checkSitemapBefore()
+    {
+        $sitemapFile = __DIR__ . '/../../storage/app/public/sitemap.xml';
+        $beforeTime = 0;
+        if(file_exists($sitemapFile)) {
+            $beforeTime = filemtime($sitemapFile);
+        }
+        sleep(1);
+        return $beforeTime;
+    }
+
+    /**
+     * サイトマップ生成確認用
+     */
+    private function checkSitemapAfter($beforeTime)
+    {
+        $sitemapFile = __DIR__ . '/../../storage/app/public/sitemap.xml';
+        $afterTime = 0;
+        if(file_exists($sitemapFile)) {
+            $afterTime = filemtime($sitemapFile);
+        }
+        $this->assertNotSame($beforeTime, $afterTime);
+
+        // サイトマップ内の文字列の確認
+        $sitemap = file_get_contents($sitemapFile);
+        $this->assertMatchesRegularExpression('/<urlset/', $sitemap);
+        $this->assertMatchesRegularExpression('/<\/urlset>/', $sitemap);
+        $this->assertMatchesRegularExpression('/<url>/', $sitemap);
+        $this->assertMatchesRegularExpression('/<loc>/', $sitemap);
+        $this->assertMatchesRegularExpression('/<lastmod>/', $sitemap);
+        $this->assertMatchesRegularExpression('/<\/url>/', $sitemap);
+        $this->assertMatchesRegularExpression('/<\/loc>/', $sitemap);
+        $this->assertMatchesRegularExpression('/<\/lastmod>/', $sitemap);
+        return true;
     }
 }

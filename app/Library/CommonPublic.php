@@ -42,11 +42,11 @@ class CommonPublic
     /**
      * setUrl
      * 公開用URLを生成する
-     * @access private
+     * @access public
      * @param $data
      * @return $data
      */
-    private function setUrl($data)
+    public function setUrl($data)
     {
         foreach($data as $key=>$d) {
             if(!isset($d->publish_at)) continue;

@@ -353,4 +353,26 @@ class Article extends Model
 
         return $data[0];
     }
+
+    /**
+     * getAllData
+     * サイトマップ用全データ取得
+     */
+    public function getAllData($offset=0, $limit=1000)
+    {
+        $data = [];
+        $table = DB::table($this->table);
+        $data =
+            $table
+                ->select('path', 'publish_at', 'updated_at')
+                ->where('status', config('umekoset.status_publish'))
+                ->orderBy('updated_at', 'desc')
+                ->orderBy('id', 'desc')
+                ->offset($offset)
+                ->limit($limit)
+                ->get()
+                ->toArray();
+
+        return $data;
+    }
 }
