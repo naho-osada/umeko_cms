@@ -68,7 +68,7 @@ class Sitemap
             $csvAry = [];
             $siteData = $common->setUrl($data);
             foreach($siteData as $d) {
-                $csvAry[] = '<url>' . "\n". '<loc>' . $d->url . '</loc>' . "\n" . '<lastmod>' . $d->updated_at . '</lastmod>' . "\n" . '</url>';
+                $csvAry[] = '<url>' . "\n". '<loc>' . $d->url . '</loc>' . "\n" . '<lastmod>' . date(DateTime::W3C, strtotime($d->updated_at)) . '</lastmod>' . "\n" . '</url>';
             }
             $offset = $limit + $offset;
             Storage::append($sitemapFile, implode("\n", $csvAry));
