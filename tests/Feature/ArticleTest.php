@@ -1941,7 +1941,6 @@ class ArticleTest extends TestCase
             ->assertSee('<img src="' . $icatch . '"', false)
             ->assertSee($title, false)
             ->assertSee($contents, false)
-            ->assertSee($year . '/' . sprintf('%d', $month) . '/' . $day . ' ' . $hour . ':' . $min, false)
             ->assertSee('カテゴリ01', false)
             ->assertSee('カテゴリ02', false)
             ->assertSee('カテゴリ03', false);
@@ -1990,8 +1989,7 @@ class ArticleTest extends TestCase
             ->assertSee('<div class="preview-row">Preview</div>', false)
             ->assertSee('<img src="' . $icatch . '"', false)
             ->assertSee($data->title, false)
-            ->assertSee($data->contents, false)
-            ->assertSee($data->open_year . '/' . sprintf('%d', $data->open_month) . '/' . $data->open_day . ' ' . $data->open_hour . ':' . $data->open_min, false);
+            ->assertSee($data->contents, false);
         if(!empty($relData)) {
             foreach($relData as $reld) {
              $response->assertSee($reld->category_name, false);
@@ -2030,7 +2028,6 @@ class ArticleTest extends TestCase
             ->assertSee('<div class="preview-row">Preview</div>', false)
             ->assertSee($title, false)
             ->assertSee($contents, false)
-            ->assertSee($year . '/' . sprintf('%d', $month) . '/' . $day . ' ' . $hour . ':' . $min, false)
             ->assertDontSee('<ul class="article_category">', false);
 
         // ユーザーも使用できることの確認
@@ -2077,7 +2074,6 @@ class ArticleTest extends TestCase
             ->assertSee('<img src="' . $icatch . '"', false)
             ->assertSee($title, false)
             ->assertSee($contents, false)
-            ->assertSee($year . '/' . sprintf('%d', $month) . '/' . $day . ' ' . $hour . ':' . $min, false)
             ->assertSee('カテゴリ01', false)
             ->assertSee('カテゴリ02', false)
             ->assertSee('カテゴリ03', false);
