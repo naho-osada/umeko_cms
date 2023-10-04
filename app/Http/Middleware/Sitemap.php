@@ -10,6 +10,7 @@ use App\Models\Article;
 use App\Library\CommonPublic;
 use App\Models\Category;
 use App\Models\RelatedCategory;
+use DateTime;
 
 class Sitemap
 {
@@ -34,7 +35,7 @@ class Sitemap
         $topData = $db->getRecentUpdArticle();
         $xmlset = '<?xml version="1.0" encoding="UTF-8"?>';
         $urlset = "<urlset xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' xsi:schemaLocation='http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd' xmlns='http://www.sitemaps.org/schemas/sitemap/0.9'>";
-        $topPage = '<url>' . "\n". '<loc>' . asset('/') . '</loc>' . "\n" . '<lastmod>' . $topData->updated_at . '</lastmod>' . "\n" . '</url>';
+        $topPage = '<url>' . "\n". '<loc>' . asset('/') . '</loc>' . "\n" . '<lastmod>' . date(DateTime::W3C, strtotime($topData->updated_at)) . '</lastmod>' . "\n" . '</url>';
         $sitemapFile = 'public/sitemap.xml';
 
         $common = new CommonPublic();
@@ -51,6 +52,7 @@ class Sitemap
             // カテゴリの中の最新記事を日付に使う
             $catArticle = $relCat->getRelCatNameArticle($cat->category_name);
             $updated_at = empty($catArticle) ? config('umekoset.default_published_time') : $catArticle[0]->updated_at;
+            $updated_at = date(DateTime::W3C, strtotime($updated_at));
 
             $url = url('/category/' . $cat->category_name . '/');
             $csvAry[] = '<url>' . "\n". '<loc>' . $url . '</loc>' . "\n" . '<lastmod>' . $updated_at . '</lastmod>' . "\n" . '</url>';

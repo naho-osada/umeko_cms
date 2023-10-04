@@ -1,6 +1,7 @@
 ![](/images/umeko-logo.png)
 
 ## 更新履歴 -Update
+- 2023/10/4  サイトマップ自動生成機能のlocdateをW3C形式に修正
 - 2023/6/30  サイトマップ自動生成機能を追加
 - 2022/10/31 記事のプレビュー機能を追加
 - 2022/9/5   TOPページのOGPタグmodified_dateを最後に更新された記事の更新日になるように修正
@@ -9,6 +10,7 @@
 - 2022/3/3   自動目次機能を追加しました。
 
 **<br>
+- Octber 4th,2023    Corrected locdate of sitemap automatic generation function to W3C format.
 - June 30th,2023     Added automatic sitemap generation function.
 - Octber 31st,2022   Added article preview function.
 - September 5th,2022 Corrected the OGP tag modified_date on the TOP page to be the updated date of the last updated article.

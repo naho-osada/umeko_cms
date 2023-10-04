@@ -635,7 +635,7 @@ class ArticleTest extends TestCase
         $date = new Carbon();
         $now = $date->format('Y-m-d H');
         $data = $db->getRecentUpdArticle();
-        $this->assertObjectHasAttribute('updated_at', $data);
+        $this->assertObjectHasProperty('updated_at', $data);
         // phpUnit10nにしたらassertObjectHasPropertyに変更する
         $this->assertMatchesRegularExpression('/' . $now . '/', $data->updated_at);
     }
