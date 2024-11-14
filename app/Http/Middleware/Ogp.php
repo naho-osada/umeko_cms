@@ -90,7 +90,7 @@ class Ogp
             $ogp['url'] = url($article->url);
 
             // OGPタグで記事の基本情報は取得するのでリクエストに入れる
-            $request['article'] = $article;
+            $request->article = $article;
         } else if($actions[1] == 'category') {
             // カテゴリ一覧
             $url = str_replace(config('app.url'), '/', $request->url());
@@ -113,7 +113,7 @@ class Ogp
             $ogp['url'] = url($request->getRequestUri());
 
             // OGPタグで記事の基本情報は取得するのでリクエストに入れる
-            $request['category'] = $category;
+            $request->category = $category;
         } else if($actions[1] == 'date') {
             $url = str_replace(config('app.url'), '/', $request->url());
             $uri = explode('/', $url);
@@ -143,7 +143,7 @@ class Ogp
             $ogp['image'] = asset(config('umekoset.top_image'));
             $ogp['url'] = url($request->getRequestUri());
 
-            $request['articles'] = $article;
+            $request->articles = $article;
         } else if($actions[1] == 'preview') {
             // プレビュー機能用
             $ogp['title'] = $request->post_title . config('umekoset.separate') . $siteName;
