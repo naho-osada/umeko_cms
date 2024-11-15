@@ -1,6 +1,7 @@
 ![](/images/umeko-logo.png)
 
 ## 更新履歴 -Update
+- 2024/11/15  Laravel8→Laravel11.31.0へバージョンアップ※PHP8.2以上
 - 2023/10/4  サイトマップ自動生成機能のlocdateをW3C形式に修正
 - 2023/6/30  サイトマップ自動生成機能を追加
 - 2022/10/31 記事のプレビュー機能を追加
@@ -10,6 +11,7 @@
 - 2022/3/3   自動目次機能を追加しました。
 
 **<br>
+- November 15th,2024 Laravel8→Laravel11.31.0 version upgrade.*PHP8.2 or higher
 - Octber 4th,2023    Corrected locdate of sitemap automatic generation function to W3C format.
 - June 30th,2023     Added automatic sitemap generation function.
 - Octber 31st,2022   Added article preview function.

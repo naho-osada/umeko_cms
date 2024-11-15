@@ -46,6 +46,7 @@ class PublicController extends Controller
             $data->url = asset('/' . $date[0] . '/' . $date[1] . '/' . $data->path);
 
             // カテゴリ情報の取得
+            $relCategories = [];
             $relData = $relCatDb->getCategories($data->id);
             if(!empty($relData)) {
                 foreach($relData as $reld) {

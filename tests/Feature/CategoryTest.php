@@ -512,7 +512,7 @@ class CategoryTest extends TestCase
         $response = $this->post('/admin/category/edit-proc', $updData);
         $response
             ->assertStatus(302)
-            ->assertSessionHasErrors(['sort_no' => '不正な値が入力されています。']);
+            ->assertSessionHasErrors(['sort_no' => '半角数字で入力してください。']);
 
         // ソート順 存在しない数値
         $updData = [];
