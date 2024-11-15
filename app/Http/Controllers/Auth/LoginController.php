@@ -69,7 +69,7 @@ class LoginController extends Controller
     public function authenticated()
     {
         // ログインした人と管理者にメールを送る
-        if (!app()->runningUnitTests()) {
+        if (!app()->runningUnitTests() || config('umekoset.login_mail_alert')) {
             Mail::send(new LoginMail);
             Mail::send(new LoginAdminMail);
         }
