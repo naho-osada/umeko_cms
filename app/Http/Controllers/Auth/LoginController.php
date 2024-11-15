@@ -54,9 +54,11 @@ class LoginController extends Controller
      */
     protected function credentials(Request $request)
     {
-        // ログイン試験ではcaptcha判定を無視する
+        // ログイン試験でない、または設定ファイルが有効の時だけcaptcha判定をする
         if (!app()->runningUnitTests()) {
-            $request->validate(['captcha' => 'required|captcha']);
+            if(config('umekoset.login_captcha')) {
+                $request->validate(['captcha' => 'required|captcha']);
+            }
         }
         return $request->only('email', 'password');
     }
@@ -69,9 +71,12 @@ class LoginController extends Controller
     public function authenticated()
     {
         // ログインした人と管理者にメールを送る
-        if (!app()->runningUnitTests() || config('umekoset.login_mail_alert')) {
-            Mail::send(new LoginMail);
-            Mail::send(new LoginAdminMail);
+        // ログイン試験でない、または設定ファイルが有効の時だけ送る
+        if (!app()->runningUnitTests()) {
+            if(config('umekoset.login_mail_alert')) {
+                Mail::send(new LoginMail);
+                Mail::send(new LoginAdminMail);
+            }
         }
     }
 }

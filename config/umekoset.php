@@ -39,6 +39,12 @@ return [
     // HTML purifierを使用するか 使用する場合はscriptタグ使用不可となる
     'html_purifier' => false,
 
+    // ログインキャプチャの使用 true → 使用する false → 使用しない
+    'login_captcha' => false,
+
+    // ログイン通知メールの設定 true → 送信する false → 送信しない
+    'login_mail_alert' => false,
+
     // 公開日時の指定範囲 ±〇年
     'open_year_set' => 5,
 
@@ -66,7 +72,4 @@ return [
     'article_auth' => [1 => '管理者のみ', 2 => '管理者+作成者'],
     'article_auth_admin' => 1,
     'article_auth_creator' => 2,
-
-    // ログイン通知メールの設定 true → 送信する false→送信しない
-    'login_mail_alert' => false,
 ];

@@ -12,12 +12,14 @@
         <dt><label for="password">{{ __('Password') }}</label><span class="description">半角英数字で入力してください。</span><span class="require"></span></dt>
         <dd><input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="current-password">
         @error('password')<p class="err-msg">{{ $message }}</p>@enderror</dd>
+        @if(config('umekoset.login_captcha'))
         <dt><label for="captcha" class="col-md-4 control-label">画像認証</label><span class="description">画像の英数字を入力してください。</span><span class="require"></span></dt>
         <dd><input id="captcha" type="text" class="form-control" name="captcha">
         <div class="captcha-area">
             {!! captcha_img() !!}
         </div>
         @error('captcha')<p class="err-msg">{{ $message }}</p>@enderror</dd>
+        @endif
     </dl>
     <div class="remember">
         <input class="form-check-input" type="checkbox" name="remember" id="remember" {{ old('remember') ? 'checked' : '' }}>
