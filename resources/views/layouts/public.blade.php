@@ -48,11 +48,6 @@
             @yield('content')
         </div>
     </div>
-    <div class="ad">
-        <!-- admax -->
-        <script src="https://adm.shinobi.jp/o/3c90187cc6c5d90dbf15ff73f0333391"></script>
-        <!-- admax -->
-    </div>
     <footer class="footer-area">
         <ul class="footer">
             <li><a href="{{ url('/') }}">梅子</a></li>

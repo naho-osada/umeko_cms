@@ -103,7 +103,7 @@ class Ogp
             $category = $category[0];
             $relCat = new RelatedCategory;
             $catArticle = $relCat->getRelCatNameArticle($name);
-            $updateCatArtDate = empty($catArticle) ? config('umekoset.default_published_time') : $catArticle[0]->updated_at;
+            $updateCatArtDate = !isset($catArticle[0]->updated_at) ? config('umekoset.default_published_time') : $catArticle[0]->updated_at;
 
             $ogp['title'] = $category->category_name . ' の記事' . config('umekoset.separate') . $siteName;
             $ogp['description'] = 'カテゴリー名「' . $category->category_name . '」の一覧です。';
