@@ -364,7 +364,7 @@ class Article extends Model
         $table = DB::table($this->table);
         $data =
             $table
-                ->select('path', 'publish_at', 'updated_at')
+                ->select('path', 'publish_at', 'updated_at', 'title')
                 ->where('status', config('umekoset.status_publish'))
                 ->orderBy('updated_at', 'desc')
                 ->orderBy('id', 'desc')

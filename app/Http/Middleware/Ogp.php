@@ -144,6 +144,7 @@ class Ogp
             $ogp['url'] = url($request->getRequestUri());
 
             $request->articles = $article;
+            $request->search = $search;
         } else if($actions[1] == 'preview') {
             // プレビュー機能用
             $ogp['title'] = $request->post_title . config('umekoset.separate') . $siteName;

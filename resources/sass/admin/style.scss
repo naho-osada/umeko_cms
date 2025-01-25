@@ -647,3 +647,22 @@ button {
     text-align: center;
     margin-top: 1%;
 }
+
+/**
+ * HTML Maker
+ */
+.list-html {
+    border: solid 1px $ume;
+    border-radius: 5px;
+    margin: 1%;
+    padding: 1%;
+}
+
+.list-html li {
+    margin-bottom: 3%;
+}
+
+.maker-btn {
+    text-align: center;
+    margin: 1% 0 3% 0;
+}

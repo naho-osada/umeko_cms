@@ -49,5 +49,8 @@
         <script src="{{ asset('js/admin/article.js') }}"></script>
         <link rel="stylesheet" href="{{ asset('css/admin/trumbowyg.css') }}">
     @endif
+    @if(Request::is('admin/html'))
+        <script src="{{ asset('js/admin/html-maker.js') }}"></script>
+    @endif
     </body>
 </html>

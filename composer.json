@@ -12,6 +12,7 @@
         "guzzlehttp/guzzle": "^7.0.1",
         "intervention/image": "^2.5",
         "laravel/framework": "^11.0",
+        "laravel/sanctum": "^4.0",
         "laravel/tinker": "^2.5",
         "laravel/ui": "^4.2",
         "mews/captcha": "^3.2",
