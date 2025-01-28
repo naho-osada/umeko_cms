@@ -168,7 +168,7 @@ class PublicController extends Controller
         }
         $relCategories = [];
         $search = $request->search;
-        // htmlフラグがあるときは全件取得する、っていうのがよさそうではある
+        // htmlフラグがあるときは全件取得する
         if($htmlFlag) {
             $search['all'] = true;
             $db = new Article();
