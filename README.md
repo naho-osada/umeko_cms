@@ -1,7 +1,9 @@
 ![](/images/umeko-logo.png)
 
 ## 更新履歴 -Update
-- 2024/11/15  Laravel8→Laravel11.31.0へバージョンアップ※PHP8.2以上
+- 2025/01/28 HTML Maker機能をリリース 全ページをHTMLファイルでダウンロードできるようになりました
+- 2025/01/28 ログインするときのCaptcha機能をオフにする設定を追加しました
+- 2024/11/15 Laravel8→Laravel11.31.0へバージョンアップ※PHP8.2以上
 - 2023/10/4  サイトマップ自動生成機能のlocdateをW3C形式に修正
 - 2023/6/30  サイトマップ自動生成機能を追加
 - 2022/10/31 記事のプレビュー機能を追加
@@ -11,6 +13,8 @@
 - 2022/3/3   自動目次機能を追加しました。
 
 **<br>
+- Janualy 28th Released HTML Maker function You can now download all pages as HTML files.
+- Janualy 28th Added setting to turn off Captcha function when logging in.
 - November 15th,2024 Laravel8→Laravel11.31.0 version upgrade.*PHP8.2 or higher
 - Octber 4th,2023    Corrected locdate of sitemap automatic generation function to W3C format.
 - June 30th,2023     Added automatic sitemap generation function.
@@ -64,11 +68,13 @@ I wanted to make this one day, so I made it.
 ![](/images/login-sample.png)
 
 登録したメールアドレス、パスワード、Captchaを入力してログインします。<br>
-Captchaは<a href="https://github.com/mewebstudio/captcha" target="_blank">Captcha for Laravel 5/6/7(mewebstudio)</a>を使用しています（Thanks!）。
+Captchaは<a href="https://github.com/mewebstudio/captcha" target="_blank">Captcha for Laravel 5/6/7(mewebstudio)</a>を使用しています（Thanks!）。<br>
+Captcha機能の有効、無効の切り替えは設定ファイルで指定できます。<br>
 
 **<br>
 Enter your registered email address, password and Captcha to log in.<br>
-Captcha uses Captcha for Laravel 5/6/7 (mewebstudio) (Thanks!).
+Captcha uses Captcha for Laravel 5/6/7 (mewebstudio) (Thanks!).<br>
+You can enable or disable the Captcha function in the configuration file.<br>
 
 ![](/images/login-top-sample.png)
 
@@ -211,6 +217,22 @@ You will be able to check the posted articles on the screen that is open to the 
 Only articles with published status are displayed.<br>
 By default, the posted article page, category, year / month list, and 404 page are prepared.<br>
 Please change the color, arrangement, contents, etc. to your liking.<br>
+
+### HTMlページ出力機能
+梅子CMSで作成したページをすべてHTMLファイルにしてダウンロードできる機能です。<br>
+ページの管理画面を外部からアクセス可能な場所に置きたくない。<br>
+公開範囲は限定したい。<br>
+外部からの攻撃を減らし、セキュリティリスクを減らしたい。<br>
+そんなときにご利用ください。<br>
+またHTMLページなので、データベースにアクセスする手間がない分、表示速度が速くなる効果もあるかもしれません。<br>
+
+**<br>
+This is a function that allows you to download all pages created with Umeko CMS as HTML files. <br>
+I don't want to put the page management screen in a place that can be accessed from outside. <br>
+I want to limit the scope of disclosure. <br>
+We want to reduce attacks from outside and reduce security risks. <br>
+Please use it at such times. <br>
+Also, since it is an HTML page, there is no need to access a database, which may have the effect of speeding up the display speed. <br>
 
 ### その他 -Others
 梅子はまだまだ改善の余地があります。ちょっと物足りないかな、と思われることも多いかと思います。<br>
