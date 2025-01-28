@@ -94,6 +94,10 @@ class HtmlController extends Controller
         return view('admin.html.index', compact('pages', 'cnt'));
     }
 
+    /**
+     * HTML生成
+     * @access public
+     */
     public function make(request $request) {
         $this->checkAdmin();
         $db = new Article();
@@ -102,8 +106,8 @@ class HtmlController extends Controller
         $pages = [];
 
         // 自由度を残すため、ここでは文字数だけチェックする
-        $request->validate(['domain' => ['max:255']]);
         $domain = $request->domain;
+        $request->validate(['domain' => ['max:255']]);
         // 指定がないときは設定ファイルのドメインを指定
         if($domain === '' || is_null($domain)) {
             $domain = config('umekoset.html_domain');
@@ -215,18 +219,13 @@ class HtmlController extends Controller
         // HTMLページ生成
         foreach($urls as $key=>$url) {
             $htmlData = $this->setHtml($url, $domain);
-            // if(strpos($htmlData, '<html') === false && $htmlUrls[$key]['type'] !== 'html') {
-            //     $msg = 'HTML生成に失敗しました。コード：' . $htmlData;
-            //     Log::error($msg);
-            // }
             Storage::disk('local')->put('html-maker' . $htmlUrls[$key]['url'], $htmlData);
         }
 
-        // 画像をコピー
+        // 画像などをコピー
         $imageData = Storage::disk('local')->allFiles('/public');
         foreach($imageData as $img) {
             if(strpos($img, '.git') !== false || strpos($img, 'xml') !== false) continue;
-            if(strpos($img, 'png') !== false && strpos($img, 'jpg') !== false) continue;
             $path = str_replace('public', '', $img);
             Storage::disk('local')->put('html-maker' . $path, Storage::disk('local')->get($img));
         }
@@ -239,19 +238,26 @@ class HtmlController extends Controller
         $zip->close();
         ob_end_clean();
 
-        // ダウンロードさせる
-        // POST送信からダウンロードできるようにするところから
-        $mimeType = Storage::mimeType(Storage::disk('local')->path('html.zip'));
-        $headers = [
-            ['Content-Type' => $mimeType,
-             'Content-Length' => filesize(Storage::disk('local')->path('html.zip'))]
-            ];
-        setcookie('downloadok', 'true', time()+3600);
-        return Storage::disk('local')->download('html.zip', 'html.zip', $headers);
+        if(!app()->runningUnitTests()) {
+            // 通常 テストの時はダウンロードさせない
+            // ダウンロードさせる
+            $mimeType = Storage::mimeType(Storage::disk('local')->path('html.zip'));
+            $headers = [
+                ['Content-Type' => $mimeType,
+                'Content-Length' => filesize(Storage::disk('local')->path('html.zip'))]
+                ];
+            setcookie('downloadok', 'true', time()+3600);
+            return Storage::disk('local')->download('html.zip', 'html.zip', $headers);
+        }
     }
 
     /**
      * setZip
+     * zip圧縮する
+     * @access private
+     * @param $zip
+     * @param $files
+     * @return $zip
      */
     private function setZip($zip, $files) {
         $basePath = Storage::disk('local')->path('html-maker');
