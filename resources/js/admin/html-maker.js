@@ -4,14 +4,15 @@
 require('jquery/dist/jquery.js');
 window.$ = window.jQuery = require('jquery');
 $(function(){
-  // クリックしたらクッキーをセット
-  // intervalでそのクッキーがいるか監視する
-  $('#html-maker').on('click', function(){
+  // HTML生成をクリックでダウンロードアニメーション
+  $('#html-maker').on('click', function() {
+    $('#loading').removeClass('loaded');
     document.cookie='htmlmaker=true';
     var downloadTimer = setInterval(function () {
       if(getCookieValue('downloadok')) {
         document.cookie = "downloadok=; max-age=0; path=/admin/html";
         // ダウンロードアニメ削除
+        $('#loading').addClass('loaded');
         clearInterval(downloadTimer);
       }
       // ダウンロード中
@@ -19,6 +20,13 @@ $(function(){
   });
   
 });
+
+/**
+ * getCookieValue
+ * クッキーを取得する
+ * @param key
+ * @return cookiesArray or empty
+ */
 function getCookieValue(key) {
   const cookies = document.cookie.split(';');
   for (let cookie of cookies) {
@@ -29,26 +37,3 @@ function getCookieValue(key) {
   }
   return '';
 }
-// クッキーがある間はダウンロード中
-// なくなったら削除する
-// $(function(){
-//   console.log("html-maker")
-//   $('#html-maker').on('click', function(){
-//     console.log("click maker")
-//     console.log($('#domain').val())
-//     $.ajax({
-//       url: $(this).attr('formaction'),
-//       type: 'post',
-//       cache: false,
-//       data: { 'domain':$('#domain').val() },
-//       headers: {
-//         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'), // これが必要
-//       }
-//     })
-//     .done(function(data) {
-//       console.log("成功")
-//     }).fail(function(error) {
-//       alert(error.responseJSON.message);
-//     });
-//   });
-// });

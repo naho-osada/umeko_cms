@@ -25,5 +25,8 @@
             </ul>
         </div>
     </div>
+    <div id="loading" class="loaded">
+        <div class="loader" id="loading-img"></div>
+    </div>
 </div>
 @endsection
