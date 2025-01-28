@@ -153,7 +153,7 @@ class HtmlController extends Controller
                 $htmlUrls[$cnt]['type'] = 'html';
                 $paths = explode('/', $d->url);
                 array_pop($paths);
-                $m = array_pop($paths);// 月
+                $m = sprintf("%d", array_pop($paths));// 月
                 $y = array_pop($paths);// 年
 
                 if(in_array($y, $years) === false) {
