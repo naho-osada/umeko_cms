@@ -218,7 +218,7 @@ Only articles with published status are displayed.<br>
 By default, the posted article page, category, year / month list, and 404 page are prepared.<br>
 Please change the color, arrangement, contents, etc. to your liking.<br>
 
-### HTMlページ出力機能
+### HTMLページ出力機能
 梅子CMSで作成したページをすべてHTMLファイルにしてダウンロードできる機能です。<br>
 ページの管理画面を外部からアクセス可能な場所に置きたくない。<br>
 公開範囲は限定したい。<br>
