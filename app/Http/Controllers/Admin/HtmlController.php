@@ -105,6 +105,10 @@ class HtmlController extends Controller
         $limit = 1000;
         $pages = [];
 
+        // 作成前に以前のものを全削除する
+        Storage::deleteDirectory('html-maker');
+        Storage::delete('html.zip');
+
         // 自由度を残すため、ここでは文字数だけチェックする
         $domain = $request->domain;
         $request->validate(['domain' => ['max:255']]);
@@ -112,10 +116,6 @@ class HtmlController extends Controller
         if($domain === '' || is_null($domain)) {
             $domain = config('umekoset.html_domain');
         }
-
-        // 作成前に以前のものを全削除する
-        Storage::deleteDirectory('html-maker');
-        Storage::delete('html.zip');
 
         // 全ページのURLを取得
         $cnt = 0;

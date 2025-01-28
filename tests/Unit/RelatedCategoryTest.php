@@ -241,16 +241,36 @@ class RelatedCategoryTest extends TestCase
         $data = $db->getRelCatNameArticle();
         $this->assertEmpty($data);
 
+        $cols = [
+            'id',
+            'title',
+            'contents',
+            'status',
+            'publish_at',
+            'path',
+            'icatch',
+            'icatch_y',
+            'icatch_m',
+            'icatch_file',
+            'updated_at'];
+
         // カテゴリ名01で検索
         $name = '01';
         $num = !empty(config('umekoset.article_index_num')) ? config('umekoset.article_index_num') : config('umekoset.default_index_num');
         $data = $db->getRelCatNameArticle($name);
         $this->assertGreaterThanOrEqual(1, count($data));
         $this->assertLessThanOrEqual($num, count($data));
+        $this->assertSame($cols, array_keys((array)$data[0]));
 
         $name = '0123456789';
         $data = $db->getRelCatNameArticle();
         $this->assertEmpty($data);
+
+        // HTMLフラグ付きで検索（全件取得）
+        $data = $db->getRelCatNameArticle('01', true);
+        $this->assertGreaterThanOrEqual(1, count($data));
+        $this->assertLessThanOrEqual($num, count($data));
+        $this->assertSame($cols, array_keys((array)$data[0]));
     }
 
     /**
