@@ -96,24 +96,29 @@ class RelatedCategory extends Model
      * @param $name
      * @return $data
      */
-    public function getRelCatNameArticle($name='')
+    public function getRelCatNameArticle($name='', $htmlFlag=false)
     {
         $data = '';
         if(empty($name)) return $data;
         $num = !empty(config('umekoset.archive_list_num')) ? config('umekoset.archive_list_num') : config('umekoset.default_index_num');
         $now = Carbon::now();
         $table = DB::table($this->table . ' as relcat');
-        $data = $table
-                    ->join('article as art', 'relcat.article_id', '=', 'art.id')
-                    ->join('category as cat', 'cat.id', '=', 'relcat.category_id')
-                    ->leftjoin('save_file as s_file', 's_file.id', '=', 'art.icatch')
-                    ->select('art.id', 'art.title', 'art.contents', 'art.status', 'art.publish_at', 'art.path', 'art.icatch', 's_file.year as icatch_y', 's_file.month as icatch_m', 's_file.filename as icatch_file', 'art.updated_at')
-                    ->orderBy('art.publish_at', 'desc')
-                    ->orderBy('art.id', 'asc')
-                    ->where('art.status', '=', config('umekoset.status_publish'))
-                    ->where('cat.category_name', $name)
-                    ->where('art.publish_at', '<=', $now)
-                    ->paginate($num);
+        $table
+            ->join('article as art', 'relcat.article_id', '=', 'art.id')
+            ->join('category as cat', 'cat.id', '=', 'relcat.category_id')
+            ->leftjoin('save_file as s_file', 's_file.id', '=', 'art.icatch')
+            ->select('art.id', 'art.title', 'art.contents', 'art.status', 'art.publish_at', 'art.path', 'art.icatch', 's_file.year as icatch_y', 's_file.month as icatch_m', 's_file.filename as icatch_file', 'art.updated_at')
+            ->orderBy('art.publish_at', 'desc')
+            ->orderBy('art.id', 'asc')
+            ->where('art.status', '=', config('umekoset.status_publish'))
+            ->where('cat.category_name', $name)
+            ->where('art.publish_at', '<=', $now);
+        if(!$htmlFlag) {
+            $data = $table->paginate($num);
+        } else {
+            // HTMLページだったら全件取得
+            $data = $table->get();
+        }
         return $data;
     }
 

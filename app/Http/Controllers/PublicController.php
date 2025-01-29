@@ -121,11 +121,17 @@ class PublicController extends Controller
      */
     public function category(Request $request, $name)
     {
+        // HTML生成用の項目
+        if(isset($request->html)) {
+            $htmlFlag = $request->html;
+        } else {
+            $htmlFlag = false;
+        }
         // middlewareで取得済み
         $category = $request->category;
         $relCatDb = new RelatedCategory();
         // 該当カテゴリ記事の取得
-        $relArticles = $relCatDb->getRelCatNameArticle($name);
+        $relArticles = $relCatDb->getRelCatNameArticle($name, $htmlFlag);
         // アイキャッチ画像とURLの生成
         $common = new CommonPublic();
         $relArticles = $common->setDefaultData($relArticles, 'small');
@@ -142,7 +148,7 @@ class PublicController extends Controller
             }
         }
 
-        return view('public.category', compact('category', 'relCategories', 'relArticles'));
+        return view('public.category', compact('category', 'relCategories', 'relArticles', 'htmlFlag'));
     }
 
     /**
@@ -154,9 +160,24 @@ class PublicController extends Controller
      */
     public function date(Request $request, $year, $month='')
     {
+        // HTML生成用の項目
+        if(isset($request->html)) {
+            $htmlFlag = $request->html;
+        } else {
+            $htmlFlag = false;
+        }
         $relCategories = [];
         $search = $request->search;
-        $articles = $request->articles;
+        // htmlフラグがあるときは全件取得する
+        if($htmlFlag) {
+            $search['all'] = true;
+            $db = new Article();
+            $articles = $db->searchArticleDate($search);
+            $common = new CommonPublic();
+            $articles = $common->setDefaultData($articles, 'small');
+        } else {
+            $articles = $request->articles;
+        }
         $relCatDb = new RelatedCategory();
         foreach($articles as $key=>$data) {
             // カテゴリ情報の取得
@@ -169,6 +190,6 @@ class PublicController extends Controller
             }
         }
         $dispDate = $year . '年' .(empty($month) ? '' : intval($month) . '月');
-        return view('public.date', compact('dispDate', 'search', 'articles', 'relCategories'));
+        return view('public.date', compact('dispDate', 'search', 'articles', 'relCategories', 'htmlFlag'));
     }
 }

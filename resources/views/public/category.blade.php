@@ -28,7 +28,7 @@
     @else
     <div>{{ config('umekoset.default_message') }}</div>
     @endif
-    @if(!$relArticles->isEmpty())
+    @if(!$relArticles->isEmpty() && !$htmlFlag)
         {{ $relArticles->appends($category->category_name)->links('pager/default') }}
     @endif
 </div>

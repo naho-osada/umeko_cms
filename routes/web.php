@@ -61,6 +61,11 @@ Route::post('/admin/file/edit-proc', [App\Http\Controllers\Admin\FileController:
 Route::get('/admin/file/delete-confirm', [App\Http\Controllers\Admin\FileController::class, 'deleteConfirm'])->name('delete-confirm');
 Route::post('/admin/file/delete-proc', [App\Http\Controllers\Admin\FileController::class, 'deleteProc']);
 // ▲ファイル管理 ▲
+
+// ▼ HTML管理 ▼
+Route::get('/admin/html', [App\Http\Controllers\Admin\HtmlController::class, 'index'])->name('index');
+Route::post('/admin/html/make', [App\Http\Controllers\Admin\HtmlController::class, 'make'])->name('make');
+// ▲ HTML管理 ▲
 // ▲ 管理画面 ▲
 
 // ▼ 公開画面 ▼

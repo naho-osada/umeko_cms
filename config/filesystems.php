@@ -33,6 +33,14 @@ return [
         'local' => [
             'driver' => 'local',
             'root' => storage_path('app'),
+            'permissions' => [ // permissions 設定値を追記
+                'dir' => [
+                    'private'  => 0755,
+                ],
+                'file' => [
+                    'private' => 0755,
+                ],
+            ]
         ],
 
         'public' => [

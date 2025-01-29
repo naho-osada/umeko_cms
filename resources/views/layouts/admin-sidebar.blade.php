@@ -6,5 +6,8 @@
         <li><a href="{{ url('/admin/category') }}">カテゴリー</a></li>
         <li><a href="{{ url('/admin/file') }}">ファイル</a></li>
         <li><a href="{{ Auth::user()->auth==config('umekoset.auth_admin') ? url('/admin/user') : url('/admin/user/edit?id=' . Auth::user()->id) }}">ユーザー</a></li>
+        @if(config('umekoset.html_creater') && Auth::user()->auth==config('umekoset.auth_admin'))
+        <li><a href="{{ url('/admin/html') }}">HTML生成</a></li>
+        @endif
     </ul>
 </div>

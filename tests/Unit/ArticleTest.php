@@ -641,6 +641,33 @@ class ArticleTest extends TestCase
     }
 
     /**
+     * getAllData
+     * サイトマップ用全データ取得
+     */
+    public function test_getAllData() {
+        $db = new Article();
+        $cols = [
+            'path',
+            'publish_at',
+            'updated_at',
+            'title',
+        ];
+        $data = $db->getAllData();
+        // 指定の項目を持っているか
+        $this->assertSame($cols, array_keys((array)$data[0]));
+        $cntData = count($data);
+
+        // offset機能の確認（1000件もないので1件も取得できないのが正しい）
+        $data = $db->getAllData(1000);
+        $this->assertEquals(0, count($data));
+
+        // limit数の確認
+        $data = $db->getAllData(0, 2000);
+        $this->assertEquals($cntData, count($data));
+        // 指定の項目を持っているか
+        $this->assertSame($cols, array_keys((array)$data[0]));
+    }
+    /**
      * setDefaultParams
      * ログインユーザーによるデフォルトの検索条件をセットする
      * @access private

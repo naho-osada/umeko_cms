@@ -30,7 +30,7 @@
         <div>{{ config('umekoset.default_message') }}</div>
         @endif
     </div>
-    @if(!$articles->isEmpty())
+    @if(!$articles->isEmpty() && !$htmlFlag)
         {{ $articles->links('pager/default') }}
     @endif
 </div>

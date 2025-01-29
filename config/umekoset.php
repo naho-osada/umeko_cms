@@ -39,6 +39,17 @@ return [
     // HTML purifierを使用するか 使用する場合はscriptタグ使用不可となる
     'html_purifier' => false,
 
+    // ログインキャプチャの使用 true → 使用する false → 使用しない
+    'login_captcha' => false,
+
+    // ログイン通知メールの設定 true → 送信する false → 送信しない
+    'login_mail_alert' => false,
+
+    // HTML出力機能
+    'html_creater' => true,
+    // 出力先のデフォルトドメイン名
+    'html_domain' => 'http://localhost',
+
     // 公開日時の指定範囲 ±〇年
     'open_year_set' => 5,
 

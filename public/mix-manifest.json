@@ -1,6 +1,7 @@
 {
     "/js/admin/trumbowyg.js": "/js/admin/trumbowyg.js",
     "/js/admin/article.js": "/js/admin/article.js",
+    "/js/admin/html-maker.js": "/js/admin/html-maker.js",
     "/css/admin/trumbowyg.css": "/css/admin/trumbowyg.css",
     "/css/admin/style.css": "/css/admin/style.css",
     "/css/style.css": "/css/style.css"

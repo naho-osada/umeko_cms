@@ -51,7 +51,11 @@
                     $month = sprintf('%d', mb_substr($key, 4));
                 ?>
                 <li>
+                    @if($cnt === 0) 
+                    {{ $year }}年{{ $month }}月（&nbsp;{{ $cnt }}&nbsp;）
+                    @else
                     <a href="{{ asset('/date/' . $year . '/' . $month) }}">{{ $year }}年{{ $month }}月（&nbsp;{{ $cnt }}&nbsp;）</a>
+                    @endif
                 </li>
                 @endforeach
             </ul>

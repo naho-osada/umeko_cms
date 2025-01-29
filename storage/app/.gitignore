@@ -1,3 +1,4 @@
-*
-!public/
+public/uploads
+public/sitemap.xml
+html-maker/*
 !.gitignore
