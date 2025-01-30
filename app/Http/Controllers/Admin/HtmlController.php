@@ -218,7 +218,11 @@ class HtmlController extends Controller
 
         // HTMLページ生成
         foreach($urls as $key=>$url) {
-            $htmlData = $this->setHtml($url, $domain);
+            if($htmlUrls[$key]['type'] == 'xml') {
+                $htmlData = $this->setSitemap($url, $domain);
+            } else {
+                $htmlData = $this->setHtml($url, $domain);
+            }
             Storage::disk('local')->put('html-maker' . $htmlUrls[$key]['url'], $htmlData);
         }
 
@@ -304,6 +308,38 @@ class HtmlController extends Controller
 
         // 画像などの保存場所置換
         $html = str_replace('storage/uploads', 'uploads', $html);
+        return $html;
+    }
+
+    /**
+     * setSitemap
+     * サイトマップ内容を取得し、ドメインを変換して返す
+     * @param $url 情報を取得するURL
+     * @param $domain 変換するドメイン名（http://含む）
+     */
+    private function setSitemap($url, $domain) {
+        $response = Http::get($url);
+        if($response->status() != 200) {
+            if(strpos($url, '404htmlmaker') === false) {
+                return $response->status();
+            }
+        }
+        $html = str_replace(url(''), $domain, $response->body());
+        preg_match_all('|<loc>' . $domain . '(.*?)</loc>|s', $html, $cData, PREG_PATTERN_ORDER);
+        $links = [];
+        foreach($cData[1] as $data) {
+            if($data == '/') continue;
+            $links[] = $data;
+        }
+        $links = array_unique($links);
+        foreach($links as $link) {
+            if($link === '') {
+                continue;
+            } else {
+                $html = str_replace($link, $link . '.html', $html);
+            }
+        }
+
         return $html;
     }
 
