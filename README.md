@@ -1,6 +1,7 @@
 ![](/images/umeko-logo.png)
 
 ## 更新履歴 -Update
+- 2026/11/4 Laravel Laravel 11.31.0 → Laravel 13.39.0にアップデートしました / PHP 8.3.36に対応しました
 - 2025/01/28 HTML Maker機能をリリース 全ページをHTMLファイルでダウンロードできるようになりました
 - 2025/01/28 ログインするときのCaptcha機能をオフにする設定を追加しました
 - 2024/11/15 Laravel8→Laravel11.31.0へバージョンアップ※PHP8.2以上
